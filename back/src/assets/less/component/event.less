@@ -1,0 +1,128 @@
+@import './style/index.less';
+.events {
+//   padding: 24px 0 0 40px;
+    .event-header-container{
+        border-bottom: 1px solid @lightWhite;
+        padding: 24px 40px;
+    }
+  .event-modal .modal-dialog-centered {
+      max-width: 800px !important;
+      form{
+          padding-left: 80px;
+          padding-right: 80px;
+          margin-top: 50px;
+      }
+      .form-group{
+          margin-bottom: 20px;
+          .col-form-label{
+              text-align: right;
+              padding-left: 0;
+              padding-right: 0;
+          }
+      }
+  }
+
+  .btn {
+      width: 128px;
+      height: 32px;
+      line-height: 20px;
+  }
+
+  .btn-secondary {
+      background: @white;
+      border-color: @tabHeader;
+      color: @tabHeader;
+  }
+
+  .btn-primary {
+      background: @tabHeader;
+      border-color: @tabHeader;
+  }
+
+  input {
+      margin-left: 40px;
+      background: @radioWhite !important;
+      border: none !important;
+  }
+
+  textarea {
+      height: 260px;
+      margin-left: 40px;
+      background: @radioWhite !important;
+      border: none;
+  }
+
+  select {
+      border: none !important;
+      background: @radioWhite !important;
+  }
+
+  label {
+      color: @lightGray;
+      font-size: 14px;
+  }
+
+  .close-btn {
+      position: absolute;
+      right: 0;
+      cursor: pointer;
+  }
+
+  .card {
+      width: 510px;
+      background: #F5F5F5;
+      border-radius: 10px;
+      border: none !important;
+      .card-body{
+          padding-top: 8px;
+          padding-bottom: 12px;
+      }
+      .card-header {
+          background: #F5F5F5;
+          border: none;
+          padding-bottom: 0;
+      }
+  }
+
+  .enent {
+      margin-bottom: 30px;
+      position: relative;
+      display: flex;
+      justify-content: flex-start;
+      align-items: center;
+  }
+
+  .card-container {
+      // margin-top: 100px;
+      height: 150px;
+  }
+
+  .date {
+      line-height: 150px;
+      width: 50px;
+  }
+
+  .line {
+      width: 1px;
+      height: 120%;
+      background: @tabHeader;
+      margin: 0 38px 0 44px;
+      position: relative;
+
+      .cls-img {
+          position: absolute;
+          right: -12px;
+          cursor: pointer;
+      }
+
+      .cle {
+          width: 14px;
+          height: 14px;
+          background: @tabHeader;
+          border-radius: 50%;
+          position: absolute;
+          top: 48.5%;
+          right: -7px;
+      }
+  }
+}

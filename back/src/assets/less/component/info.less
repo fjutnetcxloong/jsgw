@@ -1,0 +1,50 @@
+@import "./style/index.less";
+
+//资讯中心样式
+.info-center-container {
+  .info-center-body {
+      padding: 20px;
+
+      .info-center-content {
+          ul {
+              li {
+                  display: flex;
+                  justify-content: space-between;
+                  align-items: center;
+                  height: 30px;
+
+                  div:nth-child(1) {
+                      font-size: 14px;
+                      font-weight: 500;
+                      color: @lightBlack;
+                  }
+
+                  div:nth-child(1)::before {
+                      content: '';
+                      width: 5px;
+                      height: 5px;
+                      border-radius: 100%;
+                      background-color: #77CFED;
+                      display: inline-block;
+                      vertical-align: middle;
+                      margin-right: 10px;
+                  }
+
+                  div:nth-child(3) {
+                      font-size: 12px;
+                      font-weight: 300;
+                      color: @lightGray;
+                  }
+
+                  .li-line {
+                      flex: 1;
+                      height: 1px;
+                      margin-left: 20px;
+                      margin-right: 20px;
+                      background-color: #f2f2f2;
+                  }
+              }
+          }
+      }
+  }
+}

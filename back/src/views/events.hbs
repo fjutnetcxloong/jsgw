@@ -1,0 +1,242 @@
+{{#>default}}
+<div class="events">
+    <div class="event-header-container d-flex justify-content-lg-between">
+        <div class="event-header h4 font-weight-bold">中战大事记</div>
+        <div class="form-check">
+            <input class="form-check-input ml-0" type="checkbox" id="defaultCheck1" style="margin-top: 8px;">
+            <label class="form-check-label show-home ml-3" style="color: #0AAFDE" for="defaultCheck1">
+                展示在首页
+            </label>
+        </div>
+    </div>
+    <div class="add-event"></div>
+    <div style="margin-left: 80px">
+        {{#if arr.length}}
+        {{#each arr}}
+            <div class="enent d-flex card-container" id="{{this.year}}">
+                <div class="date">{{this.titleTime}}</div>
+                <div class="line">
+                    <div class="cle"></div>
+                </div>
+                <div class="card">
+                    <div class="card-header">
+                        {{this.time}}
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-title">{{this.event_title}}t</h5>
+                        <p class="card-text">{{this.event_content}}</p>
+                    </div>
+                    <div class="close close-btn" data-container="body" data-toggle="popover" data-placement="left"
+                        data-content="Vivamus sagittis lacus vel augue laoreet rutrum faucibus."
+                        onclick="delEvent({{this.id}})">&times;</div>
+                </div>
+            </div>
+    {{/each}}
+    {{/if}}
+    </div>
+    
+
+    {{!-- 删除事件 --}}
+    <div class="modal modal-del fade" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-body">
+                    是否删除此条记录，删除后将不可恢复。
+                </div>
+                <div class="modal-footer border-0">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+                    <button type="button" class="btn btn-primary del-btn">删除</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade event-modal" id="exampleModalCenter" tabindex="-1" role="dialog"
+        aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header d-flex justify-content-lg-center">
+                    <h5 class="modal-title" id="exampleModalCenterTitle">添加</h5>
+                </div>
+                <form>
+                    <div class="form-group row">
+                        <label for="colFormLabel" class="col-sm-2 col-form-label">大事记节点:</label>
+                        <div class="col-sm-10 d-flex justify-content-lg-around">
+                            <select class="form-control year w-25" aria-placeholder="请选择"></select>
+                            <select class="form-control mounth w-25">
+                            </select>
+                            <select class="form-control day w-25">
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="" class="col-sm-2 col-form-label">事件标题:</label>
+                        <input type="text" class="col-sm-9 form-control event-title" placeholder="请输入事件标题"
+                            maxlength="50">
+                    </div>
+                    <div class="mb-3 row form-group">
+                        <label for="validationTextarea" class="col-form-label col-2">大事概述:</label>
+                        <textarea class="form-control col-9 event-content" id="validationTextarea"
+                            placeholder="请输入事件内容"></textarea>
+                    </div>
+                </form>
+                <div class="modal-footer justify-content-center border-0">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal" style="margin-right: 24px">返回</button>
+                    <button type="button" class="btn btn-primary commitEvent">保存</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // 定义删除事件id
+    let delId;
+    function delEvent(id) {
+        delId = id;
+        $('.modal-del').modal('show');
+    }
+
+    $('.form-check-input').on('change', function () {
+        let show = $("input[type='checkbox']").is(':checked') ? "1" : "0";
+        let id = window.location.href.includes('intro') ? 2 : 3
+        $.post(url.changeModuleStatus, { status: show, id: 5 }, function (res) {
+            if (res && res.status === 0) {
+                $('.toast').toast("show")
+                $('.toast-body').text(res.message);
+            }
+        })
+    })
+
+    function getChecked() {
+        $.get(url.getChecked, { id: 5 }, function (res) {
+            if (res && res.status === 0) {
+                $('.form-check-input').attr('checked', res.data.checked)
+            }
+        })
+    }
+    getChecked()
+
+    $(function () {
+        // 设置card样式
+        let Line = document.getElementsByClassName('line');
+        const cardContainer = document.getElementsByClassName('card-container');
+        const lastLine = Line[Line.length - 1];
+        const openImg = new Image();
+        openImg.src = "../assets/img/cls.png";
+        openImg.style.position = 'absolute';
+        openImg.style.left = "-12px";
+        openImg.style.top = "-10px";
+        openImg.style.background = "#ffffff";
+        // 开启模态框
+        openImg.addEventListener('click', function () {
+            $('.event-modal').modal('show')
+        })
+        if (Line.length > 0) {
+            const add = document.getElementsByClassName('add-event');
+            document.getElementsByClassName('events')[0].removeChild(add[0])
+        }
+        if (Line.length > 1) {
+            Line[0].style.height = 450 + 'px';
+            lastLine.style.background = "#fff";
+            Line[Line.length - 2].style.height = "360px";
+            Line[Line.length - 2].style.zIndex = "2";
+            cardContainer[0].style.marginTop = "200px";
+            Line[0].appendChild(openImg)
+        } else if (!Line.length) {
+            const add = document.getElementsByClassName('add-event')[0];
+            add.style.height = "50px";
+            add.style.right = "-50px";
+            add.style.position = "relative";
+            add.appendChild(openImg)
+        } else if (Line.length === 1) {
+            Line[0].appendChild(openImg)
+            const oDiv = document.createElement("div");
+            oDiv.style.width = "1px"
+            oDiv.style.height = "76px"
+            oDiv.style.background = "#fff"
+            oDiv.style.position = "absolute"
+            oDiv.style.bottom = "0"
+            Line[0].appendChild(oDiv)
+        }
+
+        // 获取enent id
+        const ids = [];
+        cardContainer.forEach(item => {
+            ids.push(item.getAttribute('id'))
+        })
+        // 创建标题年
+        for (let i = 0; i < ids.length; i++) {
+            if (ids[i] !== ids[i + 1]) {
+                const yearEle = document.createElement("div");
+                yearEle.style.position = "absolute"
+                yearEle.style.top = "100px"
+                yearEle.style.left = "-20px"
+                yearEle.style.fontSize = "24px"
+                yearEle.style.color = "#0AAFDE"
+                yearEle.innerText = ids[i]
+
+                cardContainer[i].appendChild(yearEle)
+            }
+        }
+
+        // 添加年月日选择
+        const years = [...Array.from({ length: 2100 }).keys()].slice(2015);
+        const mounth = [...Array.from({ length: 13 }).keys()].slice(1);
+        const day = [...Array.from({ length: 32 }).keys()].slice(1);
+        const select = $('.year');
+        const mounthSelect = $('.mounth');
+        const daySelect = $('.day');
+        years.forEach(item => {
+            let str = `<option>${item}</option>`;
+            select.append(str)
+        })
+        mounth.forEach(item => {
+            let str = `<option>${item > 9 ? item : '0' + item}</option>`;
+            mounthSelect.append(str)
+        })
+        day.forEach(item => {
+            let str = `<option>${item > 9 ? item : '0' + item}</option>`;
+            daySelect.append(str)
+        })
+
+        // 定义删除事件
+        $('.del-btn').on('click', function () {
+            $.post(url.delEvent, { id: delId }, function (res) {
+                if (res) {
+                    $('.toast').toast('show');
+                    $('.toast-body').text(res.message);
+                    $('.toast').on('hidden.bs.toast', function () {
+                        location.reload();
+                    })
+                }
+            })
+        })
+
+        // 提交信息
+        $('.commitEvent').on('click', function () {
+            const time = select.val() + '/' + mounthSelect.val() + '/' + daySelect.val();
+            const title = $('.event-title').val();
+            const content = $('.event-content').val();
+            if (!time || !title || !content) {
+                $('.toast').toast('show');
+                $('.toast-body').text('请完善表格内容!')
+                return;
+            }
+            $.post(url.insertEvent, { time, title, content }, function (res) {
+                if (res) {
+                    $('.toast').toast('show');
+                    $('.toast-body').text(res.message)
+                    $('.toast').on('hidden.bs.toast', function () {
+                        if (res.status === 0) {
+                            location.reload();
+                        }
+                    })
+                }
+            })
+        })
+
+    })
+
+</script>
+{{/default}}

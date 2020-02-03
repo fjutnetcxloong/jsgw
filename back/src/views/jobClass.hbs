@@ -1,0 +1,203 @@
+{{#>default}}
+  <style>
+    .aActive{
+      color:#FF9C39 !important;
+    }
+  </style>
+<div class="job-class-container">
+  <div class="job-class-top">
+    <span>工作地点</span>
+    <button type="button" class="btn" data-toggle="modal" data-target="#exampleModalCenter" id="addBtn">
+      新增
+    </button>
+  </div>
+  <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header border-bottom-0 justify-content-center ">
+          <h5 class="modal-title  font-weight-bolder" id="exampleModalCenterTitle">新增</h5>
+        </div>
+        <form class="w-75 job-form">
+          <div class="form-group row">
+            <label for="colFormLabel" class="col-sm-3 col-form-label job-form-label">名称:</label>
+            <div class="col-sm-9">
+              <input type="text" class="form-control job-form-input" id="colFormLabel" placeholder="请输入">
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="colFormLabel" class="col-sm-3 col-form-label job-form-label">排序:</label>
+            <div class="col-sm-9">
+              <input type="number" class="form-control job-form-input" id="colFormSort" placeholder="请输入">
+            </div>
+          </div>
+        </form>
+        <div class="modal-footer border-top-0 job-modal-footer justify-content-center">
+          <button type="button" class="btn btn-secondary btn-left" style="margin-right: 24px" data-dismiss="modal">返回</button>
+          <button type="button" id="saveBtn" class="btn btn-primary btn-right">保存</button>
+        </div>
+      </div>
+    </div>
+  </div>
+    {{!-- 删除按钮的弹框 --}}
+    <div class="modal fade" id="deletetable" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-body">
+              确定删除该条类目
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+              <button type="button" class="btn btn-primary" id="delete_list">确定</button>
+            </div>
+          </div>
+        </div>
+    </div>
+    {{!-- 是否停用按钮的弹框 --}}
+    <div class="modal fade" id="enable" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-body">
+              确定操作？
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+              <button type="button" class="btn btn-primary" id="enable_btn">确定</button>
+            </div>
+          </div>
+        </div>
+    </div>
+  <div class="table-container">
+    <table id="table" class="text-center table table-striped table-borderless" data-pagination="true">
+    </table>
+    <script>
+      var $table = $('#table');
+      var deleteData = {};//删除数据集合
+      var editInfo = {};//编辑数据集合
+      function searchList(){
+        $.post(url.adressAdmin,{},function(resData){
+          let arr = []
+          if(resData && resData.data.rows && resData.data.rows.length > 0){
+            arr = resData.data.rows;
+          }
+          $table.bootstrapTable('load',arr )
+          $table.bootstrapTable("hideLoading");
+        });
+      }
+      $(function () {
+        $table.bootstrapTable({
+          toolbar: '.toolbar',
+          method: "post",
+          url: url.adressAdmin,
+          pageNumber: 1,
+          pagination: true,
+          sortable: true,
+          pageSize: 5,
+          paginationPreText: "上一页",
+          paginationNextText: "下一页",
+          theadClasses: "thead-blue",
+          pageList: [10, 25],
+          formatLoadingMessage: function () {
+            return '<span style="font-size:20px">加载中...</span>';
+          },
+          formatNoMatches:function(){
+              return "暂无数据";
+          },
+          responseHandler:(data)=>{
+            if(data.status === 0){
+              return data.data
+            }
+            return null;
+          },
+          columns: [{
+            title: '工作地点',
+            field: 'name'
+          }, {
+            title: '排序',
+            field: 'sort'
+          }, {
+            title: '操作',
+            field: 'opt',
+            formatter: operateFormatter,
+            events: operateEvent = {
+              "click #table-edit": function (e, value, row, index) {
+                $('#exampleModalCenterTitle').html('编辑')
+                $('#colFormLabel').val(row.name);
+                $('#colFormSort').val(row.sort);
+                editInfo = row;
+                e.preventDefault();
+                $('#exampleModalCenter').modal('show')
+              },
+              "click #table-del": function (e, value, row, index) {
+                deleteData = row;
+                $('#deletetable').modal('show')
+              },
+              "click #table-start": function (e, value, row, index) {
+                enableData = row;
+                $('#enable').modal('show')
+              }
+            }
+          }],
+        })
+        
+      function operateFormatter(value, row, index) {
+        return [
+          '<a class="like opt" id="table-edit" href="javascript:void(0)" title="Like">编辑</a>',
+          '<a class="remove opt" id="table-del" href="javascript:void(0)" title="Remove">删除</a>',
+          row.enable === '0' ? '<a class="like opt" id="table-start" href="javascript:void(0)" title="启用或停用">启用</a>':'<a class="like opt aActive" id="table-start" href="javascript:void(0)" title="Remove">禁用</a>'
+        ].join('')
+      }
+      //删除招聘信息
+      $('#delete_list').click(function(){
+        $.post(url.deleteAdress,deleteData,function(res){
+          if(res && res.status === 0){
+            toast('删除成功')
+            $('#deletetable').modal('hide')
+            searchList();//重新请求数据
+          }
+        })
+      })
+      $('#enable_btn').click(function(data){
+        $.post(url.adressEnable,enableData,function(res){
+          if(res && res.status === 0){
+            toast('操作成功')
+            $('#enable').modal('hide')
+            searchList();//重新请求数据
+          }
+        })
+      })
+        $('#addBtn').click(()=>{//点击新增按钮清除编辑缓存数据
+            $('#colFormLabel').val('');
+            $('#colFormSort').val('');
+        })
+        $('#saveBtn').click(()=>{//点击新增或编辑
+            const str = $('#exampleModalCenterTitle').html();
+            const obj = {
+              name:$('#colFormLabel').val(),
+              sort:$('#colFormSort').val()
+            }
+            if(str === '新增'){
+                $.post(url.adressAdd,obj,function(res){
+                  if(res && res.status === 0){
+                    toast('添加成功')
+                    $('#exampleModalCenter').modal('hide')
+                    searchList();//重新请求数据
+                  }
+                })
+            }else{
+              $.post(url.adressEdit,{...obj,id:editInfo.id},function(res){
+                if(res && res.status === 0){
+                  toast('操作成功')
+                  $('#exampleModalCenter').modal('hide')
+                  searchList();//重新请求数据
+                }
+              })
+            }
+            $('#colFormLabel').val('');
+            $('#colFormSort').val('');
+        })
+      })
+    </script>
+  </div>
+</div>
+{{/default}}

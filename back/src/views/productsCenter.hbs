@@ -1,0 +1,539 @@
+{{#>default}}
+{{!-- <link rel="stylesheet" href="../assets/styles/fileinput.min.css">
+<script src="../assets/js/fileinput.min.js"></script> --}}
+<div class="job-class-container products-center-container">
+  <div class="job-class-top">
+    <div class="card-body-title">
+      产品中心
+    </div>
+    <div class="card-body-btn d-flex" style="line-height: 32px;">
+      <div class="form-check" style="margin-right: 30px;">
+        <input class="form-check-input" type="checkbox" id="defaultCheck1" style="margin-top: 11px;">
+        <label class="form-check-label show-home" style="color: #0AAFDE" for="defaultCheck1">
+          展示在首页
+        </label>
+      </div>
+      <button type="button" class="btn" data-toggle="modal" data-target="#addModal">新增</button>
+    </div>
+  </div>
+  <div>
+
+  </div>
+  <div class="table-container">
+    <table id="table" class="text-center table table-striped table-borderless" data-pagination="true">
+      <thead>
+        <tr>
+          <th data-field="serial_number" data-width="300"></th>
+          <th data-field="pro_name" data-width="300"></th>
+          <th data-field="opt"></th>
+        </tr>
+      </thead>
+    </table>
+    <script src="../utils/utils.js"></script>
+    <script>
+      $('.form-check-input').on('change', function () {
+        let show = $("input[type='checkbox']").is(':checked') ? "1" : "0";
+        $.post(url.changeModuleStatus, { status: show, id: 7 }, function (res) {
+          if (res && res.status === 0) {
+            toast(res.message, 0)
+          }
+        })
+      })
+
+      function getChecked() {
+        $.get(url.getChecked, { id: 7 }, function (res) {
+          if (res && res.status === 0) {
+            $('.form-check-input').attr('checked', res.data.checked)
+          }
+        })
+      }
+      getChecked()
+
+      var $table = $('#table')
+      $(function () {
+        $table.bootstrapTable({
+          toolbar: '.toolbar',
+          method: "post",
+          url: url.getProducts,
+          pageNumber: 1,
+          pagination: true,
+          sortable: true,
+          sortOrder: "asc",
+          //queryParams: { a: 1 },
+          pageSize: 10,
+          paginationPreText: "上一页",
+          paginationNextText: "下一页",
+          pageList: [5, 10, 15, 20, 25],
+          formatLoadingMessage: function () {
+            return "请稍等，正在加载中...";
+          },
+          responseHandler: function (res) {
+            return res.data
+          },
+          columns: [{
+            title: '编号',
+            field: 'serial_number'
+          }, {
+            title: '产品名称',
+            field: 'pro_name'
+          }, {
+            title: '操作',
+            field: 'opt',
+            formatter: operateFormatter,
+            events: operateEvent = {
+              "click .btn-modify": function (e, value, row, index) {
+                e.preventDefault();
+                var html = `<div class="modal-body">
+                  <form class="modify-product-form">
+                    <div class="form-group d-flex justify-content-start">
+                      <label for="pro-name" class="col-form-label">产品名称：</label>
+                      <div>
+                        <input keyId=${row.id} type="text" placeholder="中卖网" class="form-control" name="recipientName" id="pro-name" value=${row.pro_name}>
+                      </div>
+                    </div>
+                    <div class="form-group d-flex justify-content-start">
+                      <label for="pro-desc" class="col-form-label">简介：</label>
+                      <div>
+                        <textarea class="form-control" placeholder="优质商品，快乐选购" name="messageText" id="pro-desc">${row.product_desc}</textarea>
+                      </div>
+                    </div>
+                    <div class="form-group d-flex justify-content-start">
+                      <label for="pro-number" class="col-form-label">产品编号：</label>
+                      <div>
+                        <input type="text" class="form-control" name="serialNumber" id="pro-number" value=${row.serial_number}>
+                      </div>
+                    </div>
+                    <div class="form-group product-logo d-flex justify-content-start align-items-center">
+                      <label class="control-label" for="pro-logo">产品logo：</label>
+                      <div>
+                        <img src=${row.logo} alt=""/>
+                        <input usedPic=${row.logo} class="modify-picture" id="pro-logo" type="file">
+                      </div>
+                    </div>
+                    <div class="form-group product-code d-flex justify-content-start align-items-center">
+                      <label class="control-label" for="pro-link">下载方式：</label>
+                      <div>
+                        <img src=${row.link_code} alt=""/>
+                        <input usedPic=${row.link_code} class="modify-picture" id="pro-link-code" type="file">
+                      </div>
+                    </div>
+                    <div class="form-group d-flex justify-content-start align-items-center">
+                      <label for="pro-android-dawnload-address" class="col-form-label">安卓下载地址：</label>
+                      <div>
+                        <input name="androidDawnloadAddress" id="pro-android-dawnload-address" class="form-control" type="text" value=${row.android_link}>
+                      </div>
+                    </div>
+                    <div class="form-group d-flex justify-content-start align-items-center">
+                      <label for="pro-ios-dawnload-address" class="col-form-label">IOS下载地址：</label>
+                      <div>
+                        <input name="iosDawnloadAddress" id="pro-ios-dawnload-address" class="form-control" type="text" value=${row.ios_link}>
+                      </div>
+                    </div>
+                    <div class="modal-footer d-flex justify-content-center">
+                      <button type="button" class="btn" data-dismiss="modal" style="margin-right: 24px;border: 1px solid #0aafde;color: #0aafde">返回</button>
+                      <button type="submit" class="btn" style="background-color: #0aafde;color: #fff">保存</button>
+                    </div>
+                  </form>
+                </div>`
+                $('#modify-modal').html(html);
+                $('.modify-product-form').bootstrapValidator(testForm).on('success.form.bv', function(){
+                  commitModify()
+                })
+                $('#pro-logo,#pro-link-code').on('change', function(e){
+                  $(this).prev().attr('src', getObjectURL(e.target.files[0]))
+                })
+              },
+              "click .btn-remove": function (e, value, row, index) {
+                e.preventDefault();
+                $.post(url.delProduct, { id: row.id }, function (res) {
+                  if (res && res.status === 0) {
+                    toast(res.message, 1)
+                  }
+                })
+              },
+              "click .btn-preview": function (e, value, row, index) {
+                e.preventDefault();
+                $.post(url.previewProduct, {id: row.id}, function(res){
+                  if(res && res.status === 0){
+                    var html = `<div class="container">
+                        <div class="row">
+                          <div class="col-6 pre-item d-flex justify-content-start">
+                            <span>产品名称：</span>
+                            <span class="">${res.data[0].pro_name}</span>
+                          </div>
+                          <div class="col-6 pre-item d-flex justify-content-start">
+                            <span>简介：</span>
+                            <span>${res.data[0].product_desc}</span>
+                          </div>
+                        </div>
+                        <div class="row">
+                          <div class="col-6 pre-item d-flex justify-content-start">
+                            <span>产品logo：</span>
+                            <img src=${res.data[0].logo} alt="">
+                          </div>
+                          <div class="col-6 pre-item d-flex justify-content-start">
+                            <span>下载地址二维码：</span>
+                            <img src=${res.data[0].link_code} alt="">
+                          </div>
+                        </div>
+                        <div class="row">
+                          <div class="col-6 pre-item d-flex justify-content-start">
+                            <span>安卓下载地址：</span>
+                            <span>${res.data[0].android_link}</span>
+                          </div>
+                          <div class="col-6 pre-item d-flex justify-content-start">
+                            <span>IOS下载地址：</span>
+                            <span>${res.data[0].ios_link}</span>
+                          </div>
+                        </div>
+                      </div>`
+                    $('#preview-content').html(html)
+                  }
+                })
+              },
+              "click .btn-show": function (e, value, row, index) {
+                e.preventDefault();
+                const status = row.status === '1' ? '0' : '1'
+                $.post(url.showItem, { status, id: row.id }, function (res) {
+                  if (res && res.status === 0) {
+                    toast(res.message, 1)
+                  }
+                })
+              }
+            }
+          }]
+        })
+        function operateFormatter(value, row, index) {
+          return [
+            row.status === '1' ? '<a class="btn-modify like opt" href="javascript:void(0)" title="Like" data-toggle="modal" data-target="#modifyModal">修改 </a>' : '',
+            row.status === '1' ? '<a class="btn-remove remove opt" href="javascript:void(0)" title="Remove">删除</a>' : '',
+            '<a class="btn-preview opt" href="javascript:void(0)" title="Remove" data-toggle="modal" data-target="#previewModal">预览 </a>',
+            `<a class="btn-show like opt" href="javascript:void(0)" title="Remove">${row.status === '1' ? '展示' : '停止展示'}</a>`
+          ].join('')
+        }
+      })
+    </script>
+  </div>
+</div>
+
+{{!-- 新增弹出框 --}}
+<div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+  aria-hidden="true">
+
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        {{!-- <h5 class="modal-title" id="exampleModalLabel">New message</h5> --}}
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form class="new-product-form">
+          <div class="form-group d-flex justify-content-start">
+            <label for="recipient-name" class="col-form-label">产品名称：</label>
+            <div>
+              <input type="text" name="recipientName" placeholder="中卖网" class="form-control" id="recipient-name" />
+            </div>
+          </div>
+          <div class="form-group d-flex justify-content-start">
+            <label for="message-text" class="col-form-label">简介：</label>
+            <div>
+              <textarea class="form-control" name="messageText" placeholder="优质商品，快乐选购" id="message-text"></textarea>
+            </div>
+          </div>
+          <div class="form-group d-flex justify-content-start">
+            <label for="serial-number" class="col-form-label">产品编号：</label>
+            <div>
+              <input type="text" name="serialNumber" class="form-control" id="serial-number" />
+            </div>
+          </div>
+          <div class="form-group product-logo d-flex justify-content-start align-items-center">
+            <label class="control-label">产品logo：</label>
+            <div class="product-logo-container">
+              <input id="dawnload-logo" name="dawnloadLogo" type="file" />
+            </div>
+          </div>
+          <div class="form-group product-code d-flex justify-content-start align-items-center">
+            <label class="control-label">下载方式：</label>
+            <div class="product-code-container">
+              <input id="dawnload-way" name="dawnloadWay" type="file" />
+            </div>
+          </div>
+          <div class="form-group d-flex justify-content-start align-items-center">
+            <label for="android-dawnload-address" class="col-form-label">安卓下载地址：</label>
+            <div>
+              <input id="android-dawnload-address" name="androidDawnloadAddress" class="form-control" type="text" />
+            </div>
+          </div>
+          <div class="form-group d-flex justify-content-start align-items-center">
+            <label for="ios-dawnload-address" class="col-form-label">IOS下载地址：</label>
+            <div>
+              <input id="ios-dawnload-address" name="iosDawnloadAddress" class="form-control" type="text" />
+            </div>
+          </div>
+          <div class="modal-footer text-center">
+            {{!-- <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button> --}}
+            <button type="submit" class="btn" style="background-color: #0aafde;color: #fff">发布</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{{!-- 修改弹窗 --}}
+<div class="modal fade" id="modifyModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        {{!-- <h5 class="modal-title" id="exampleModalLabel">New message</h5> --}}
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div id="modify-modal">
+        
+      </div>
+    </div>
+  </div>
+</div>
+{{!-- 预览弹窗 --}}
+<div class="modal fade" id="previewModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        {{!-- <h5 class="modal-title" id="exampleModalLabel">New message</h5> --}}
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body" id="preview-content">
+        
+      </div>
+      <div class="modal-footer d-flex justify-content-center">
+        <button type="button" class="btn" style="background-color: #0aafde;color: #fff" data-dismiss="modal">返回</button>
+        {{!-- <button type="button" class="btn btn-primary">保存</button> --}}
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+  //获取本地图片url
+  function getObjectURL(file) {
+    var url = null;
+    if (window.createObjectURL != undefined) { // basic
+      url = window.createObjectURL(file);
+    } else if (window.URL != undefined) { // mozilla(firefox)
+      url = window.URL.createObjectURL(file);
+    } else if (window.webkitURL != undefined) { // webkit or chrome
+      url = window.webkitURL.createObjectURL(file);
+    }
+    return url;
+  }
+  //封装的图片预览方法
+  function getImg(selector, container) {
+    $(selector).on('change', function (e) {
+      const newImg = e.target.files[0]
+      const imgUrl = getObjectURL(newImg)
+      $(container).css({
+        'background': `url(${getObjectURL(e.target.files[0])})`,
+        'background-size': '100%'
+      })
+    })
+  }
+  getImg($('#dawnload-logo'), $('.product-logo-container'))
+  getImg($('#dawnload-way'), $('.product-code-container'))
+  //表单验证
+  const testForm = {
+    fields: {
+      recipientName: {
+        message: '产品名称验证失败',
+        validators: {
+          notEmpty: {
+            message: '产品名称不能为空'
+          }
+        }
+      },
+      messageText: {
+        validators: {
+          notEmpty: {
+            message: '产品简介不能为空'
+          },
+          {{!-- stringLength: {
+            min: 2,
+            max: 5,
+             message: '用户姓名长度必须在2到5位之间'
+          } --}}
+        }
+      },
+      serialNumber: {
+        validators: {
+          notEmpty: {
+            message: '产品编号不能为空'
+          },
+          regexp: {
+            regexp: /^[0-9]+$/,
+            message: '请输入数字'
+          }
+        }
+      },
+      dawnloadLogo: {
+        validators: {
+          notEmpty: {
+            message: '产品logo不能为空'
+          }
+        }
+      },
+      dawnloadWay: {
+        validators: {
+          notEmpty: {
+            message: '二维码不能为空'
+          }
+        }
+      },
+      androidDawnloadAddress: {
+        validators: {
+          notEmpty: {
+            message: '安卓下载地址不能为空'
+          }
+        }
+      },
+      iosDawnloadAddress: {
+        validators: {
+          notEmpty: {
+            message: 'IOS下载地址不能为空'
+          }
+        }
+      }
+    }
+  }
+  $('.new-product-form').bootstrapValidator(testForm).on('success.form.bv', function (){
+    commitNewProduct()
+  })
+  //新增产品提交
+  function commitNewProduct() {
+    let formData = new FormData();
+    const logo = $('#dawnload-logo')[0].files;
+    console.log(logo)
+    const link_code = $('#dawnload-way')[0].files;
+    const serial_number = $('#serial-number').val();
+    const product_desc = $('#message-text').val();
+    const pro_name = $('#recipient-name').val();
+    const android_link = $('#android-dawnload-address').val();
+    const ios_link = $('#ios-dawnload-address').val();
+    formData.append('logo', logo[0], logo[0].name);
+    formData.append('link_code', link_code[0], link_code[0].name);
+    formData.append('serial_number', serial_number);
+    formData.append('product_desc', product_desc);
+    formData.append('pro_name', pro_name);
+    formData.append('android_link', android_link);
+    formData.append('ios_link', ios_link)
+    $.ajax({
+      url: url.newProduct,
+      type: "POST",
+      data: formData,
+      async: false,
+      cache: false,
+      contentType: false,
+      processData: false,
+      success: function (res) {
+        toast(res.message, 1)
+      }
+    });
+  }
+  //修改产品提交
+  function commitModify() {
+    let formData = new FormData();
+    let logo = $('#pro-logo').attr('usedPic')
+    let link_code = $('#pro-link-code').attr('usedPic')
+    if($('#pro-logo')[0].files[0]){
+      logo = $('#pro-logo')[0].files
+      formData.append('logo', logo[0], logo[0].name);
+    } else {
+      formData.append('logo', logo);
+    }
+    if($('#pro-link-code')[0].files[0]){
+      link_code = $('#pro-link-code')[0].files
+      formData.append('link_code', link_code[0], link_code[0].name);
+    } else {
+      formData.append('link_code', link_code);
+    }
+    const serial_number = $('#pro-number').val();
+    const product_desc = $('#pro-desc').val();
+    const pro_name = $('#pro-name').val();
+    const android_link = $('#pro-android-dawnload-address').val();
+    const ios_link = $('#pro-ios-dawnload-address').val();
+    const id = $('#pro-name').attr('keyId');
+    formData.append('serial_number', serial_number);
+    formData.append('product_desc', product_desc);
+    formData.append('pro_name', pro_name);
+    formData.append('android_link', android_link);
+    formData.append('ios_link', ios_link)
+    formData.append('id', id)
+    $.ajax({
+      url: url.modifyProduct,
+      type: "POST",
+      data: formData,
+      async: false,
+      cache: false,
+      contentType: false,
+      processData: false,
+      success: function (res) {
+        toast(res.message, 1)
+      }
+    });
+  }
+</script>
+<style>
+  .modify-picture{
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 1;
+  }
+  .modal .modal-body img{
+    width: 200px;
+    height: 200px;
+  }
+  #previewModal .modal-dialog{
+    max-width: 940px !important;
+  }
+  #previewModal .pre-item span:nth-child(1){
+    width: 40%;
+    text-align: right;
+  }
+  .form-group label {
+    width: 120px;
+    text-align: right;
+  }
+
+  .modal-footer .btn {
+    width: 128px;
+  }
+
+  .form-group>div {
+    width: 300px;
+    position: relative;
+  }
+
+  .product-logo-container input,
+  .product-code-container input {
+    width: 200px;
+    height: 200px;
+    border: 1px solid #eee;
+    opacity: 0;
+  }
+
+  .form-group .product-logo-container,
+  .form-group .product-code-container {
+    border: 1px solid #eee;
+    width: 200px;
+    height: 200px;
+  }
+</style>
+{{/default}}

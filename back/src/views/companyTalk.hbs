@@ -1,0 +1,377 @@
+{{#>default}}
+  <link href="../assets/js/bootstrap-daterangepicker/daterangepicker.css?version"  rel="stylesheet">
+  <script type="text/javascript"  src="../assets/js/bootstrap-daterangepicker/moment.min.js"  charset="UTF-8"></script>
+  <script type="text/javascript"  src="../assets/js/bootstrap-daterangepicker/daterangepicker.js"  charset="UTF-8"></script>
+
+<div class="job-class-container company-talk-container">
+  <div class="toast position-fixed" role="alert" aria-live="assertive" aria-atomic="true" data-delay="1000">
+    <div class="toast-body"></div>
+  </div>
+  <div class="mainModal">
+    <div class="job-class-top">
+      <span>公司交流</span>
+      <button type="button" class="btn" onclick="showOr()">新增</button>
+    </div>
+    <div class="table-container">
+      <div class="toolbar">
+        <div class="row row-searchWork">
+          <div class="col-5">
+            <input type="text" class="form-control searchWork" placeholder="请输入关键字" name="title">
+          </div>
+          <div class="col-5">
+            <div class="main main-searchWork">
+              <div class="input-group fl">
+                <button type="button" class="btn btn-default form-control daterange-btn" id="daterange-btn">
+                  <span></span>
+                  <i class="time_close"></i>
+                </button>
+                <input type="hidden" value="" id="incomeStartDate">
+                <input type="hidden" value="" id="incomeEndDate">
+              </div>
+            </div>
+          </div>
+          <div class="col-2 text-right btn-group d-flex">
+            <button class="screeningClear btn" onclick="clearSearch()">清空</button>
+            <button class="btn" id="filterByComm" onclick="searchList()">搜索</button>
+          </div>
+        </div>
+      </div>
+      <div class="table-searchWork">
+        <table
+          id="table"
+          class="text-center table table-striped table-borderless"
+          data-pagination="true">
+        </table>
+      </div>
+    </div>
+  </div>
+  <div class="editor-content d-none editModel">
+    <form class="mt-3 mb-3">
+      <div class="form-group row" style=" margin: 0 auto;">
+        <label for="colFormLabel" class="col-sm-1 col-form-label" style="font-size: 20px; line-height: 19px;">标题</label>
+        <div class="col-sm-11 ">
+          <input type="email" class="form-control title" maxlength="50" id="colFormLabel" placeholder="请输入标题">
+        </div>
+      </div>
+    </form>
+    <div id="editor" style="margin: 0 auto;"></div>
+    <div class="text-center">
+      <button class="btn btn-primary btn-edit" onclick="showOr(true)"
+        style="width: 138px; height: 32px; margin: 30px 0; background-color: #0AAFDE; border-color: #0AAFDE;">返回</button>
+      <button class="btn btn-primary btn-edit" onclick="saveHtml()"
+        style="width: 138px; height: 32px; margin: 30px 0; background-color: #0AAFDE; border-color: #0AAFDE;">发布</button>
+    </div>
+  </div>
+    {{!-- 删除按钮的弹框 --}}
+    <div class="modal fade" id="deletetable" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-body">
+            确定删除该条类目
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+            <button type="button" class="btn btn-primary" onclick="deleteRow()" id="delete_list">确定</button>
+          </div>
+        </div>
+      </div>
+  </div>
+    {{!-- 是否停用按钮的弹框 --}}
+    <div class="modal fade" id="enable" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-body">
+            确定操作？
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+            <button type="button" class="btn btn-primary" onclick="showOrHide()" id="enable_btn">确定</button>
+          </div>
+        </div>
+    </div>
+  </div>
+    <script>
+        var $table = $('#table');
+        var enableData = {};//显示隐藏的数据
+        var deleteData = {};//删除数据储存
+        var editData = {};//编辑时的数据
+
+        // 关闭提示框
+        function toast(message,callBack) {
+          $('.toast').toast("show")
+          $('.toast-body').text(message);
+          $('.toast').on('hidden.bs.toast', function () {
+            callBack && callBack()
+          })
+        }
+        //删除某条数据
+        function deleteRow(){
+          $.post(url.deleteCommunicate,{id:deleteData.id},(res)=>{
+            if(res && res.status === 0){
+              $('#deletetable').modal('hide')
+              searchList();
+              toast(res.message,()=>{
+                $('#deletetable').modal('hide')
+              })
+            }
+          })
+        }
+
+        //显示或隐藏
+        function showOrHide(){
+          $.post(url.enableCommu,{id:enableData.id,status:enableData.status},(res)=>{
+            if(res && res.status === 0){
+              searchList();
+              toast(res.message,()=>{
+                $('#enable').modal('hide')
+              })
+            }
+          })
+        }
+        function formatDate(timestamp) {
+            var date = new Date(timestamp );//时间戳为10位需*1000，时间戳为13位的话不需乘1000
+            var Y = date.getFullYear() + '-';
+            var M = (date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1) + '-';
+            var D = date.getDate() + ' ';
+            var h = date.getHours() + ':';
+            var m = date.getMinutes() + ':';
+            var s = date.getSeconds();
+            return Y + M + D + h + m + s;
+        }
+
+        //点击搜索
+        function searchList() {
+          $table.bootstrapTable("showLoading");
+          const title = $("input[name='title']").val();
+          const start_time = $('#daterange-btn span').html() && $('#daterange-btn span').html()!=='发布开始时间 ~ 发布结束时间' ? $('#daterange-btn span').html().split('~')[0] : '';
+          const end_time = $('#daterange-btn span').html() && $('#daterange-btn span').html()!=='发布开始时间 ~ 发布结束时间' ? $('#daterange-btn span').html().split('~')[1] : '';
+          const arr = [title,start_time,end_time];//取值的数组
+          const keyArr = ['title','create_time','end_time'];
+          const obj = {};//发过去的对象
+          keyArr.forEach((item,index)=>{
+              arr.forEach((data,num)=>{
+                if(data && index === num){
+                  obj[item] = data
+                }
+              })
+          })
+          $.post(url.communicateList,obj,function(resData){
+            let arr = [];
+            if(resData && resData.data.rows && resData.data.rows.length > 0 ){
+              arr = resData.data.rows.reverse();
+            }
+              $table.bootstrapTable("hideLoading");
+              $table.bootstrapTable('load',arr )
+          });
+        }
+
+          //清空筛选条件
+          function clearSearch(){
+              $("input[name='title']").val('');
+              $('#daterange-btn span').html('发布开始时间 ~ 发布结束时间')
+          }
+          $(function() {
+            $table.bootstrapTable({
+              toolbar: '.toolbar',
+              method: "post",
+              pageNumber: 1,
+              pagination: true,
+              pageSize: 5,
+              paginationPreText: "上一页",
+              paginationNextText: "下一页",
+              pageList: [5, 10, 20, 40],
+              url: url.communicateList,
+              columns: [{
+                title: '标题',
+                field: 'title'
+              }, {
+                title: '发布时间',
+                field: 'create_time',
+                formatter:(res)=>{
+                  return formatDate(res)
+                }
+              }, {
+                title: '操作',
+                field: 'opt',
+                formatter: operateFormatter,
+                events: operateEvent = {
+                  "click #table_edit": function (e, value, row, index) {
+                    editData = row;
+                    editor.txt.html(row.describe);
+                    $('#colFormLabel').val(row.title);
+                    showOr()
+                    e.preventDefault();
+                  },
+                  "click #table_del": function (e, value, row, index) {
+                    deleteData = row;
+                    $('#deletetable').modal('show')
+                  },
+                  "click #table_hide": function (e, value, row, index) {
+                    enableData = row;
+                    $('#enable').modal('show')
+                  },
+                  "click #table_see": function (e, value, row, index) {
+                    $('#preview').html(prevSee(row));
+                    $('#preview').modal('show');
+                  },
+                }
+              }],
+              formatLoadingMessage: function () {
+                return '<span style="font-size:20px">加载中...</span>';
+              },
+              formatNoMatches:function(){
+                  return "暂无数据";
+              },
+              responseHandler:function(res){
+                const arr = [];
+                if(res && res.status === 0 && res.data.rows.length > 0 ){
+                    const arrList = res.data.rows.reverse();
+                    arrList.forEach(item => {
+                      arr.push({
+                        id:item.id,
+                        title: item.title,
+                        create_time: item.create_time,
+                        describe:item.describe,
+                        status:item.status
+                      })
+                  })
+                }
+                return arr;
+              }
+            })
+            function operateFormatter(value, row, index) {
+              const style = row.status === '1' ? 'aActive' :''
+              return [
+                '<a class="like opt table-see-searchWork" id="table_see" href="javascript:void(0)" title="查看">查看</a>',
+                '<a class="like opt table-see-searchWork" id="table_edit" href="javascript:void(0)" title="编辑">编辑</a>',
+                `<a class="like opt ${style} table-see-searchWork table-del-searchWork" id="table_hide" href="javascript:void(0)" title="显示或隐藏">${style ? '显示':'隐藏'}</a>`,
+                '<a class="remove opt table-see-searchWork table-del-searchWork" id="table_del" href="javascript:void(0)" title="删除">删除</a>'
+              ].join('')
+            }
+        })
+        var E = window.wangEditor;
+        var editor = new E('#editor');
+        editor.create();
+        editor.customConfig.customUploadImg = function (files, insert) {
+          var formData = new FormData();
+          for (var i = 0; i < files.length; i++) {
+            formData.append("files[" + i + "]", files[i], files[i].name);
+          }
+        };
+        //点击新增
+        function showOr(onOff){
+          if(!onOff){
+              $('.mainModal')[0].classList.add('d-none');
+              $('.editModel')[0].classList.remove('d-none');
+          }else{
+              $('.mainModal')[0].classList.remove('d-none');
+              $('.editModel')[0].classList.add('d-none');
+              editor.txt.html('');
+              $('#colFormLabel').val('');
+          }
+        }
+
+        //富文本保存时
+        function saveHtml(){
+            const title = $('#colFormLabel').val();
+            const detail = editor.txt.html();
+            if(title && detail){
+              $.post(url.editCommunicateList,{id:editData.id,title,describe:detail,create_time:new Date().getTime(),end_time:new Date().getTime()},(res)=>{
+                if(res && res.status === 0){
+                    $('#colFormLabel').val('');
+                    searchList();
+                    editor.txt.html('')
+                    toast(res.message,()=>{
+                      showOr(true);
+                    })
+                }
+              })
+            }
+        }
+    </script>
+    <script>
+        $(function () {
+        $('#daterange-btn span').html('发布开始时间 ~ 发布结束时间');
+            $("#incomeStartDate").val(GetDateStr(-2));
+            $("#incomeEndDate").val((new Date()).Format("yyyy-MM-dd"));
+
+        $('#daterange-btn').daterangepicker({
+                    startDate:moment().subtract(2, 'days'),
+                    endDate: (new Date()).Format("yyyy-MM-dd"),
+                    locale:{
+                        format: 'YYYY-MM-DD',
+                        separator: ' ~ '
+                    }
+                },
+                function(start, end,label) {
+                    if(end==null){
+                        end = start;
+                    }
+                    $('#daterange-btn span').html(start.format('YYYY-MM-DD')+' ~ '+end.format('YYYY-MM-DD'));
+                    if($("#incomeStartDate").val() != start.format('YYYY-MM-DD')&& $("#incomeEndDate").val() != end.format('YYYY-MM-DD')){
+                        $(".timeSlot .slot").removeClass("active");
+                    }
+                    $("#incomeStartDate").val(start.format('YYYY-MM-DD'));
+                    $("#incomeEndDate").val(end.format('YYYY-MM-DD'));
+                });
+        })
+      /*获取今天前后的日期*/
+        function GetDateStr(AddDayCount) {
+            var dd = new Date();
+            dd.setDate(dd.getDate()+AddDayCount);//获取AddDayCount天后的日期
+            var y = dd.getFullYear();
+            var m = (dd.getMonth()+1)<10?"0"+(dd.getMonth()+1):(dd.getMonth()+1);//获取当前月份的日期，不足10补0
+            var d = dd.getDate()<10?"0"+dd.getDate():dd.getDate();//获取当前几号，不足10补0
+            return y+"-"+m+"-"+d;
+        }
+        /*选择到账日期区间*/
+        function choseTimeSlot(obj,type) {
+            $(obj).addClass("active").siblings(".slot").removeClass("active");
+            if(type == 0){
+                /*昨天*/
+                var date = GetDateStr(-1);
+                $('#daterange-btn span').html(date+' ~ '+date);
+                $("#incomeStartDate").val(date);
+                $("#incomeEndDate").val(date);
+                $('#daterange-btn').data('daterangepicker').setStartDate(date);
+                $('#daterange-btn').data('daterangepicker').setEndDate(date);
+            }else if(type == 1){
+                /*今天*/
+                var date =(new Date()).Format("yyyy-MM-dd");
+                $('#daterange-btn span').html(date+' ~ '+date);
+                $("#incomeStartDate").val(date);
+                $("#incomeEndDate").val(date);
+                $('#daterange-btn').data('daterangepicker').setStartDate(date);
+                $('#daterange-btn').data('daterangepicker').setEndDate(date);
+            }else if(type == 2){
+                /*前三天*/
+                $('#daterange-btn span').html(GetDateStr(-2)+' ~ '+(new Date()).Format("yyyy-MM-dd"));
+                $("#incomeStartDate").val(GetDateStr(-2));
+                $("#incomeEndDate").val((new Date()).Format("yyyy-MM-dd"));
+                $('#daterange-btn').data('daterangepicker').setStartDate(GetDateStr(-2));
+                $('#daterange-btn').data('daterangepicker').setEndDate((new Date()).Format("yyyy-MM-dd"));
+            }
+        }
+      /*格式化日期*/
+      Date.prototype.Format = function (fmt) { //author: meizz
+        var o = {
+            "M+": this.getMonth() + 1,                 //月份
+            "d+": this.getDate(),                    //日
+            "h+": this.getHours(),                   //小时
+            "m+": this.getMinutes(),                 //分
+            "s+": this.getSeconds(),                 //秒
+            "q+": Math.floor((this.getMonth() + 3) / 3), //季度
+            "S": this.getMilliseconds()             //毫秒
+        };
+        if (/(y+)/.test(fmt))
+            fmt = fmt.replace(RegExp.$1, (this.getFullYear() + "").substr(4 - RegExp.$1.length));
+        for (var k in o)
+            if (new RegExp("(" + k + ")").test(fmt))
+                fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
+        return fmt;
+    }
+
+
+    </script>
+</div>
+{{/default}}

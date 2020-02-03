@@ -1,0 +1,25 @@
+<div class="header-container">
+    <div class="header-info">
+        <div>
+            <span class="info-name"></span>
+            (<span class="info-ident"></span>)
+        </div>
+        <button class="btn logout" style="color: #4FCAFF">退出</button>
+    </div>
+    <script>
+        $('.logout').on('click', function(e) {
+            e.preventDefault();
+            $.get(url.logout, function(res){
+                window.location.href = ''
+                sessionStorage.clear();
+            })
+        })
+        const info = JSON.parse(sessionStorage.getItem("info"));
+        $('.info-name').text(info.name);
+        $('.info-ident').text(info.identity);
+        {{!-- $(window).resize(function(){
+            $('.header-info').css('width', ($('body')[0].offsetWidth - 250) + 'px')
+        }) --}}
+        $('.header-info').css('width', ($('body')[0].offsetWidth - 280) + 'px')
+    </script>
+</div>

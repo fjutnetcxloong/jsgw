@@ -1,0 +1,99 @@
+@import "./style/index.less";
+
+//职位分类样式
+.job-class-container {
+  .job-class-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 24px;
+      border-bottom: 1px solid @lightWhite;
+
+      &>span,
+      .card-body-title {
+          font-size: 24px;
+          color: @lightBlack;
+          font-weight: bold;
+      }
+
+      &>.btn {
+          font-size: 14px;
+          background-color: @tabHeader;
+          width: 128px;
+          height: 32px;
+          color: @white;
+          border-radius: 4px;
+      }
+
+      .card-body-btn {
+          .btn {
+              width: 128px;
+              font-size: 14px;
+              color: @tabHeader;
+          }
+
+          .btn:nth-child(2) {
+              background-color: @tabHeader;
+              color: @white;
+          }
+      }
+  }
+
+  .job-modal-footer {
+      margin-bottom: 64px;
+
+      .btn {
+          width: 128px;
+          height: 32px;
+          font-size: 14px;
+          line-height: 20px;
+      }
+
+      .btn-left {
+          border: 1px solid @tabHeader;
+          background: @white;
+          color: @tabHeader;
+          margin-right: 20px;
+      }
+
+      .btn-right {
+          background: @tabHeader;
+          color: @white;
+      }
+  }
+
+  .job-form {
+      margin: 0 auto;
+      // height: 343px;
+      padding: 40px 40px 0 40px;
+      box-sizing: border-box;
+
+      .job-form-label {
+          color: @lightGray;
+          font-size: 14px;
+      }
+
+      .job-form-input {
+          height: 32px;
+          background: @radioWhite !important;
+          border: none !important;
+      }
+
+      input::-webkit-input-placeholder {
+          /* 修改字体颜色 */
+          color: @radioFontWhite;
+          /* 修改字号，默认继承input */
+          font-size: 12px;
+      }
+  }
+
+  #table thead {
+      background: @tabHeader;
+      color: @white;
+  }
+
+  // #table tr {
+  //     height: 80px;
+  //     line-height: 80px;
+  // }
+}

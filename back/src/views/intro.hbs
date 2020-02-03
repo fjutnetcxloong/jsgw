@@ -1,0 +1,126 @@
+{{#>default}}
+<div class="intro-container">
+    <div class="intro-title border-bottom">
+        <div class="float-left font-weight-bolder intro">公司简介</div>
+        <div class="float-right d-flex justify-content-between">
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" id="defaultCheck1">
+                <label class="form-check-label show-home font-weight-bold" for="defaultCheck1">
+                    展示在首页
+                </label>
+            </div>
+            <button class="btn text-white border-0 intro-edit" onclick="change()">编辑</button>
+        </div>
+    </div>
+    <div class="intro-desc">
+        <div id="ht"></div>
+    </div>
+    <div class="editor invisible">
+        <div id="editor" style="width: 1000px; margin: 50px auto;"></div>
+        <div class="text-center">
+            <button class="btn btn-primary btn-edit" onclick="saveHtml()">保存</button>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript" type="module">
+    // 关闭提示框
+    function toast(message) {
+        $('.toast').toast("show")
+        $('.toast-body').text(message);
+        $('.toast').on('hidden.bs.toast', function () {
+            location.reload()
+        })
+    }
+    var edit = document.getElementsByClassName('intro-edit')[0];
+    var desc = document.getElementsByClassName('intro-desc')[0];
+    var home = document.getElementsByClassName('show-home')[0];
+    var checkBox = document.getElementsByClassName('form-check-input')[0]
+    $(function () {
+        $('.form-check-input').on('change', function () {
+            let show = $("input[type='checkbox']").is(':checked') ? "1" : "0";
+            let id = window.location.href.includes('intro') ? 2 : 3
+            $.post(url.changeModuleStatus, { status: show, id }, function (res) {
+                if (res && res.status === 0) {
+                    $('.toast').toast("show")
+                    $('.toast-body').text(res.message);
+                }
+            })
+        })
+    })
+    var E = window.wangEditor;
+    var editor = new E('#editor');
+    editor.customConfig = {
+        uploadImgMaxSize: 2 * 1024 * 1024,
+        uploadFileName: 'mypic',
+        uploadImgMaxLength: 10,
+        debug: true,//开启debug调试
+    }
+
+    editor.customConfig.customUploadImg = function (files, insert) {
+        console.log(files)
+        var formData = new FormData();
+        for (var i = 0; i < files.length; i++) {
+            formData.append("files[" + i + "]", files[i], files[i].name);
+        }
+        $.ajax({ 
+            url: url.submitIntro,
+            type: "POST",
+            data: formData,
+            async: false,
+            cache: false,
+            contentType: false,
+            processData: false,
+            success: function (res) {
+                if (res.status == 0) {
+                    res.data.forEach(item => {
+                        insert(item)
+                    })
+                }
+            }
+        });
+    };
+    editor.create();
+    // 显示富文本
+    function change() {
+        edit.classList.add('d-none');
+        desc.classList.add('d-none');
+        home.classList.add('d-none');
+        checkBox.classList.add('d-none');
+        $('.editor')[0].classList.remove('invisible')
+    }
+
+    // 上传富文本
+    function saveHtml() {
+        var html = editor.txt.html();
+        var filterHtml = filterXSS(html);
+        let id = window.location.href.includes('intro') ? 1 : 2
+        $.post(url.insertIntro, { html: filterHtml, id }, function (res) {
+            if (res) {
+                toast(res.message)
+            }
+        })
+    }
+    // 获取页面渲染元素
+    function getHtml() {
+        let id = window.location.href.includes('intro') ? 1 : 2
+        $.post(url.renderHtml, { id }, function (res) {
+            if (res && res.status === 0) {
+                $('#ht').html(res.data.html);
+            }
+        })
+    }
+    getHtml();
+
+    // 获取选中状态
+    function getChecked() {
+        let id = window.location.href.includes('intro') ? 2 : 3
+        $.get(url.getChecked, { id }, function (res) {
+            if (res && res.status === 0) {
+                $('.form-check-input').attr('checked', res.data.checked)
+            }
+        })
+    }
+    getChecked()
+</script>
+{{/default}}

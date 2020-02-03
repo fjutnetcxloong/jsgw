@@ -1,0 +1,122 @@
+.exchange {
+    min-width: 1200px;
+    margin-bottom: 60px;
+    .exchange-head {
+        display: flex;
+        justify-content: space-between;
+        font-size: 26px;
+        color: #25608D;
+        line-height: 28px;
+        margin: 42px 0;
+        .exchange-head-name {
+            font-family:Source Han Sans CN;
+        }
+        .exchange-button {
+            padding: 0 30px;
+            border-radius: 5px;
+        }
+    }
+
+    //表单搜索栏
+    .sizer {
+        margin-bottom: 40px;
+        .screen {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 24px;
+            .screen-left {
+                display: flex;
+                flex: 1;
+                .ant-select-enabled {
+                    width: 180px;
+                    margin-right: 40px;
+                    font-size: 12px;
+                    .ant-select-selection {
+                        background: #F3F6FA;
+                        border: none;
+                    }
+                }
+                .fill {
+                    width: 240px;
+                    margin-right: 40px;
+                    background: #F3F6FA;
+                    border: none;
+                    font-size: 12px;
+                }
+                .ant-calendar-picker {
+                    width: 280px;
+
+                    .ant-calendar-picker-input {
+                        background: #F3F6FA;
+                        border: none;
+                        font-size: 12px;
+                    }
+                }
+                .focus {
+                    background: #fff;
+                }
+            }
+
+            .search {
+                text-align: right;
+                display: flex;
+                .empty {
+                    font-size: 14px;
+                    color: #999;
+                    margin-right: 24px;
+                    line-height: 32px;
+                    cursor:pointer;
+                }
+                .ant-btn-primary {
+                    background: #4FCAFF;
+                    border-color: #4FCAFF;
+                }
+                .search-button {
+                    width: 80px;
+                    border: 1px solid #4FCAFF;
+                    color: #4FCAFF;
+                    border-radius: 4px;
+                    text-align: center;
+                    line-height: 30px;
+                    font-family:Source Han Sans CN;
+                }
+            }
+        }
+
+    }
+
+    //公告栏
+    .bulletin-board {
+        display: flex;
+        justify-content: space-between;
+        padding: 24px 40px;
+        cursor:pointer;
+        font-family:Source Han Sans CN;
+        .explain {
+            max-width: 50%;
+            font-size:  14px;
+            color: #333;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+        .name-read {
+            color: #999;
+        }
+        .explain:hover {
+            color: #F4B43C;
+        }
+
+        .time-date {
+            display: flex;
+            font-size: 14px;
+            color: #333;
+            .data {
+                margin:0 20px 0 60px;
+            }
+        }
+    }
+    .bulletin-board:nth-child(even) {
+        background: #F8FDFF;
+    }
+}

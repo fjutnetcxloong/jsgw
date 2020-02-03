@@ -1,0 +1,33 @@
+@import "./style/index.less";
+*{
+    text-decoration: none !important;
+    padding: 0;
+    margin: 0;
+}
+.post-sort-content {
+    .top-content{
+        display: flex;
+        justify-content: space-between;
+        padding: 0 23px 0 24px;
+        height: 80px;
+        line-height: 80px;
+        .post-sort-title{
+            color: @lightBlack;
+            font-size: 24px;
+            font-weight: bold;
+        }
+        .button-content{
+            .btn{
+                background-color: @tabHeader;
+                color: @white;
+                font-size: 14px;
+                width: 128px;
+                height: 32px;
+                line-height: 1;
+            }
+        }
+    }
+    .main-content{
+        background: @white;
+    }
+}

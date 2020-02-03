@@ -1,0 +1,88 @@
+{{#>default}}
+<div class="job-class-container index-manage-container">
+  <div class="job-class-top">
+    <span>首页管理</span>
+    {{!-- <button type="button" class="btn edit-btn">编辑</button> --}}
+  </div>
+  <div class="table-container">
+    <table
+      id="table"
+      class="text-center table table-striped table-borderless"
+      data-pagination="true">
+    </table>
+    <script src="../utils/utils.js"></script>
+    <script>
+      //编辑
+      var $table = $('#table')
+        $(function() {
+          $table.bootstrapTable({
+            toolbar: '.toolbar',
+            method: "get",
+            url: url.getModule,
+            pageNumber: 1,
+            pagination: true,
+            sortable: true,
+            sortOrder: "asc",
+            pageSize: 5,
+            paginationPreText: "上一页",
+            paginationNextText: "下一页",
+            pageList: [5, 10, 15, 20, 25],
+            formatLoadingMessage: function () {
+              return "请稍等，正在加载中...";
+            },
+            responseHandler: function (res) {
+              return res.data 
+            },
+            columns: [{
+              title: '展示模块',
+              field: 'module_name'
+            }, {
+              title: '位置排序(数值越小排的越前)',
+              field: 'module_number',
+              formatter: operateFormatter,
+              events: operateEvent = {
+                "change .module_number": function(e, value, row, index){
+                  let str = /^[0-9]{1,}$/
+                  if(str.test(e.target.value)){
+                      $.post(url.changeModuleNumber, {module_number: e.target.value, id: row.id}, function(res){
+                      if(res && res.status === 0){
+                        toast(res.message, 1)
+                      }
+                    })
+                  } else {
+                    toast('请输入数字', 0)
+                  }
+                }
+              }
+            }, {
+              title: '状态',
+              field: 'status',
+              formatter: operateFormatter2,
+              events: operateEvent = {
+                "change .custom-control-input": function(e, value, row, index){
+                  $.post(url.changeModuleStatus, {status: e.target.checked, id: row.id}, function(res){
+                    if(res && res.status === 0){
+                      toast(res.message, 1)
+                    }
+                  })
+                }
+              }
+            }]
+          })
+          function operateFormatter(value, row, index) {
+              return `<form class="set-module-number">
+                <input type="text" class="module_number" value=${row.module_number}>
+              </form>`
+          }
+          function operateFormatter2(value, row, index){
+            return `<div class="custom-control custom-switch" style="padding-left: 0">
+              <span style="position: absolute">${row.status === 0 ? '未展示' : '已展示'}</span>
+              <input type="checkbox" ${row.status === 0 ? '' : 'checked'} class="custom-control-input" id="customSwitch${row.id}">
+              <label class="custom-control-label" for="customSwitch${row.id}"></label>
+            </div>`
+          }
+        })
+    </script>
+  </div>
+</div>
+{{/default}}

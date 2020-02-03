@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="中站科技官网后台">
+    <title>中站科技官网后台</title>
+    <link rel="icon" href="../../assets/img/fav.png">
+    <link rel="stylesheet" href="../../assets/styles/bootstrap.min.css">
+    <link rel="stylesheet" href="../../assets/styles/bootstrapValidator.min.css">
+    <link rel="stylesheet" href="../../assets/css/main.css">
+    <link rel="stylesheet" href="../../assets/styles/bootstrap-table.min.css">
+    {{!-- <script src="https://cdn.bootcss.com/moment.js/2.22.0/moment-with-locales.js"></script> --}}
+    <link rel="stylesheet" href="../../assets/js/moment.js">
+    <script src="https://cdn.bootcss.com/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="../../assets/js/jquery-3.4.1.min.js"></script>
+    <script src="../../assets/js/bootstrap.min.js"></script>
+    <script src="../assets/js/bootstrapValidator.min.js"></script>
+    <script src="../../assets/js/bootstrap-table.min.js"></script>
+    <script src="../../utils/constant.js"></script>
+    <script src="../../assets/js/wangEditor.min.js"></script>
+    <script src="../../assets/js/xss.min.js"></script>
+    <script src="../../utils/utils.js"></script>
+</head>
+
+<body>
+    <div class="container-fluid home-container">
+        <div class="sider-bar">
+            {{> sidebar }}
+        </div>
+        <div class="body-content">
+            {{> header }}
+            <div class="mid-content">
+                {{> toast}}
+                {{> @partial-block }}
+                {{> footer }}
+            </div>
+
+        </div>
+    </div>
+</body>
+
+</html>

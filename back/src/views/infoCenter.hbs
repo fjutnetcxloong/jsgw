@@ -1,0 +1,224 @@
+{{#>default}}
+<div class="job-class-container info-center-container">
+  <div class="job-class-top">
+    <div class="card-body-title">
+      资讯中心
+    </div>
+    <div class="card-body-btn d-flex" style="line-height: 32px;">
+      <div class="form-check" style="margin-right: 30px;">
+        <input class="form-check-input" type="checkbox" id="defaultCheck1" style="margin-top: 11px;">
+        <label class="form-check-label show-home" style="color: #0AAFDE" for="defaultCheck1">
+          展示在首页
+        </label>
+      </div>
+      <button type="button" class="btn edit-btn" onclick="change()">新增</button>
+    </div>
+  </div>
+
+  <div class="info-center-body">
+    <div class="info-center-content table-container">
+      <table id="table" class="text-center table table-striped table-borderless"></table>
+    </div>
+  </div>
+  <div class="editor-content d-none">
+    <form class="mt-3 mb-3">
+      <div class="form-group row" style=" margin: 0 auto;">
+        <div class="col-sm-2 col-form-label text-right pr-5" style="font-size: 20px; line-height: 19px;">标题</div>
+        <div class="col-sm-9">
+          <input type="text" class="form-control title" maxlength="50" id="colFormLabel" placeholder="请输入标题">
+        </div>
+      </div>
+    </form>
+    <div id="editor" style="width: 1000px; margin: 0 auto;"></div>
+    <div class="text-center">
+      <button class="btn btn-primary btn-edit" onclick="saveHtml()"
+        style="width: 138px; height: 32px; line-height: 20px; margin: 30px 0; background-color: #0AAFDE;"
+        onclick="saveHtml()">发布</button>
+    </div>
+  </div>
+</div>
+<script src="../utils/utils.js"></script>
+<script type="text/javascript">
+  let editStatus;
+  let editId;
+  function toast(message) {
+    $('.toast').toast("show")
+    $('.toast-body').text(message);
+    $('.toast').on('hidden.bs.toast', function () {
+      location.reload()
+    })
+  }
+  function operateFormatter(value, row, index) {
+    let show = row.show === "1" ? "隐藏" : "开启"
+    return [
+      '<a class="like opt" id="table-edit" href="javascript:void(0)" title="Like">编辑</a>',
+      '<a class="opt" id="table-hide" href="javascript:void(0)" title="Remove">' + show + '</a>',
+      '<a class="remove opt" id="table-del" href="javascript:void(0)" title="Remove">删除</a>'
+    ].join('')
+  }
+
+  $('.form-check-input').on('change', function () {
+    let show = $("input[type='checkbox']").is(':checked') ? "1" : "0";
+    $.post(url.changeModuleStatus, { status: show, id: 6 }, function (res) {
+      if (res && res.status === 0) {
+        $('.toast').toast("show")
+        $('.toast-body').text(res.message);
+      }
+    })
+  })
+
+  // 获取展示状态
+  function getChecked() {
+    $.get(url.getChecked, { id: 6 }, function (res) {
+      if (res && res.status === 0) {
+        $('.form-check-input').attr('checked', res.data.checked)
+      }
+    })
+  }
+  getChecked()
+
+  // 初始化表格
+  $('#table').bootstrapTable({
+    striped: true,
+    method: "post",
+    url: url.getInfo,
+    pageNumber: 1,//如果
+    pageSize: 5,//如果设置了分页，页面数据条数
+    pagination: true,
+    pageList: [5, 10, 20, 40],	//如果设置了{{!--  --}}
+    paginationPreText: "上一页",
+    paginationNextText: "下一页",
+    showJumpto: true,
+
+    sidePagination: "server", //服务端处理分页
+    queryParamsType: 'limit',
+    queryParams: function (params) {
+      var temp = {
+        limit: params.limit, // 每页显示数量
+        offset: params.offset, // SQL语句起始索引
+        page: (params.offset / params.limit) + 1,   //当前页码
+      };
+      return temp;
+    },
+    formatLoadingMessage: function () {
+      return "请稍等，正在加载中...";
+    },
+    responseHandler: function (res) {
+      const col = [];
+      res.data.rows.forEach(item => {
+        col.push({
+          id: item.id,
+          title: item.info_title,
+          content: item.info_content,
+          time: getTime(item.createdAt),
+          show: item.show_status,
+          total: res.total
+        })
+      })
+      return {
+        rows: col,
+        total: res.data.total
+      };
+    },
+    columns: [{
+      title: '标题',
+      field: 'title',
+    }, {
+      title: '发布时间',
+      field: 'time'
+    }, {
+      title: '操作',
+      field: 'opt',
+      class: 'last-column',
+      formatter: operateFormatter,
+      events: operateEvent = {
+        "click #table-edit": function (e, value, row, index) {
+          change();
+          $('.title').val(row.title);
+          editor.txt.html(row.content);
+          editId = row.id
+          editStatus = true;
+        },
+        "click #table-hide": function (e, value, row, index) {
+          $.post(url.hideInfo, { id: row.id }, function (res) {
+            if (res) {
+              toast(res.message);
+            }
+          })
+        },
+        "click #table-del": function (e, value, row, index) {
+          $.post(url.delInfo, { id: row.id }, function (res) {
+            if (res) {
+              toast(res.message)
+            }
+          })
+        }
+      }
+    }],
+  })
+  function change() {
+    $('.show-home')[0].classList.add('d-none');
+    $('.edit-btn')[0].classList.add('d-none');
+    $('.info-center-body')[0].classList.add('d-none');
+    $('.form-check-input')[0].classList.add('d-none');
+    $('.editor-content')[0].classList.remove('d-none');
+  }
+  var E = window.wangEditor;
+  var editor = new E('#editor');
+  editor.customConfig = {
+    uploadImgMaxSize: 2 * 1024 * 1024,
+    uploadFileName: 'mypic',
+    uploadImgMaxLength: 10,
+    debug: true,//开启debug调试
+  }
+
+  editor.customConfig.customUploadImg = function (files, insert) {
+    var formData = new FormData();
+    for (var i = 0; i < files.length; i++) {
+      formData.append("files[" + i + "]", files[i], files[i].name);
+    }
+    $.ajax({
+      url: url.submitIntro,
+      type: "POST",
+      data: formData,
+      async: false,
+      cache: false,
+      contentType: false,
+      processData: false,
+      success: function (res) {
+        if (res.status == 0) {
+          res.data.forEach(item => {
+            insert(item)
+          })
+        }
+      }
+    });
+  };
+  editor.create();
+  // 上传富文本
+  function saveHtml() {
+    var html = editor.txt.html();
+    var title = $('.title').val();
+    var filterHtml = filterXSS(html);
+    if (!html || !title) {
+      $('.toast').toast('show');
+      $('.toast-body').text('请写入要上传的内容');
+      return
+    };
+    if (editStatus) {
+      $.post(url.editInfo, { id: editId, html, title }, function (res) {
+        if (res) {
+          toast(res.message)
+        }
+      })
+      return;
+    }
+    $.post(url.insertInfo, { html, title }, function (res) {
+      if (res) {
+        toast(res.message)
+      }
+    })
+  }
+
+</script>
+{{/default}}

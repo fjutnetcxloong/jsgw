@@ -1,0 +1,371 @@
+@import './style/index.less';
+
+#recruic-wrap{
+  .myrow {
+      display: flex;
+      flex-direction: row;
+      /*margin-left:1em;*/
+  }
+  .float-left{
+      // float: unset !important;
+      width: 100%;
+  }
+  .toolbar{
+      form{
+          input,select,.input-group{
+              background:@radioWhite;
+              border:none;
+              color:@radioFontWhite;
+              font-size:12px;
+          }
+          .input-group{
+              border-radius: 0.25rem;
+              height: 32px;
+              border: none;
+              outline: none;
+              background-color: #F3F6FA;
+              color: #A0AAB6;
+              font-size: 12px;
+              button{
+                  span{
+                      color:@radioFontWhite;
+                      font-size:12px;
+                  }
+              }
+          }
+          input::placeholder,.select-style{
+            height: 32px;
+            border: none;
+            outline: none;
+            background-color: #F3F6FA;
+            color: #A0AAB6;
+            font-size: 12px;
+            text-align: center;
+          }
+      }
+  }
+  #daterange-btn{
+      span{
+        position: absolute;
+        top: 16%;
+        right: 0%;
+        width: 100%;
+      }
+  }
+  .screeningClear{
+    font-size:14px;
+    color:@tabHeader;
+    margin-right: 15px;
+    line-height: 30px;
+    cursor: pointer;
+  }
+  #filterBy{
+      width:64px;
+      height:32px;
+      line-height:16px;
+      color:@tabHeader;
+      border:1px solid @tabHeader;
+      background:@white;
+      font-size:14px;
+  }
+  .edit-modal{
+      max-width: 1000px;
+      width:940px;
+      #exampleModalCenterTitle{
+          margin:0 auto;
+      }
+      .modal-header{
+          border:none;
+      }
+      .rec-from{
+          .form-row{
+              display: flex;
+              align-items: center;
+              justify-content: space-around;
+          }
+          .form-group{
+              position: relative;
+              display: flex;
+              align-items: center;
+              width:300px;
+              label{
+                  color:@lightGray;
+                  font-size:14px;
+                  width:100px;
+                  text-align: right;
+                  margin-right:10px;
+              }
+              input::placeholder{
+                  color:@radioFontWhite;
+                  font-size:12px;
+              }
+              textarea::placeholder{
+                  color:@radioFontWhite;
+                  font-size:12px;
+              }
+              .form-control{
+                  background:@radioWhite;
+                  border:none;
+              }
+          }
+          .detail_area{
+              margin-left:76px;
+          }
+          .main_info{
+              width:100%;
+              padding:0 60px;
+          }
+          input,textarea{
+              font-size:12px;
+              color:@radioFontWhite;
+          }
+      }
+      .modal-footer{
+          border:none;
+          margin:0 auto;
+          button{
+              width:128px;
+              height:32px;
+              line-height:16px;
+              font-size:14px;
+          }
+          .btn-info{
+              color:@tabHeader;
+              border:1px solid @tabHeader;
+              background:@white;
+          }
+          .btn-primary{
+              color:@white;
+              border:1px solid @tabHeader;
+              background:@tabHeader;
+          }
+      }
+  }
+
+  .work_place_list{
+      list-style: none;
+      border:1px solid @lightGrayInput;
+      li{
+          padding-left:10px;
+      }
+  }
+
+  .active_background{
+      background:rgb(124, 124, 214);
+      color:@white;
+  }
+
+  .active_background_two{
+      background:rgb(72, 72, 231);
+      color:@white !important;
+  }
+  #edit_job_class{
+      color:@radioFontWhite;
+      font-size:12px;
+  }
+  .edit_select{
+      position: relative;
+      height:calc(1.5em + .75rem + 2px);
+      width:100%;
+      border-radius: 4px;
+      border:1px solid @lightGrayInput;
+      line-height: 30px;
+      text-align: center;
+      color:@radioFontWhite;
+      font-size:12px;
+      background:@radioWhite;
+      border:none;
+      overflow: hidden;
+      text-overflow:ellipsis;
+      white-space: nowrap;
+      option{
+          border:none;
+      }
+  }
+  .scroll_work{
+      display: none;
+      width:200px;
+      position: absolute;
+      top:42px;
+      left:84px;
+      z-index: 2;
+      height:200px;
+      overflow: hidden;
+      background:@white;
+      border:1px solid @lightGrayInput;
+      border-radius: 6px;
+      .scroll_wrap{
+          width:260px;
+          height:200px;
+          overflow-y:scroll;
+          .edit_work_place_list{
+              list-style: none;
+              width:220px;
+              li{
+                  padding-left:10px;
+                  position: relative;
+                  font-size:12px;
+                  color:@radioFontWhite
+              }
+          }
+      }
+  }
+
+
+  .city_place{
+      display: none;
+      width:200px;
+      position: absolute;
+      top:42px;
+      left:290px;
+      z-index: 2;
+      height:200px;
+      overflow: hidden;
+      background:@white;
+      border:1px solid @lightGrayInput;
+      border-radius: 6px;
+      .city_wrap{
+          width:260px;
+          height:200px;
+          overflow-y:scroll;
+          .city_content{
+              list-style: none;
+              width:220px;
+              li{
+                  padding-left:10px;
+                  font-size:12px;
+                  color:@radioFontWhite
+              }
+          }
+      }
+  }
+  .county_place{
+      display: none;
+      width:200px;
+      position: absolute;
+      top:42px;
+      left:496px;
+      z-index: 2;
+      height:200px;
+      overflow: hidden;
+      background:@white;
+      border-radius: 6px;
+      border:1px solid @lightGrayInput;
+      .county_wrap{
+          width:260px;
+          height:200px;
+          overflow-y:scroll;
+          .county_content{
+              list-style: none;
+              width:220px;
+              li{
+                  padding-left:10px;
+                  font-size:12px;
+                  color:@radioFontWhite
+              }
+          }
+      }
+  }
+
+
+  .fl{
+      float: left;
+      width:280px;
+      border:1px solid @lightGrayInput;
+      border-radius: 4px;
+      color:@lightGrayInput;
+  }
+  .timeSlot{
+      line-height: 30px;
+  }
+  .slot{
+      margin-left: 20px;
+      cursor: pointer;
+  }
+  .slot.active{
+      color: blue;
+  }
+  .pl-10{
+      padding-left: 10px;
+  }
+  .pr-10{
+      padding-right: 10px;
+  }
+
+
+  .prev_main{
+      .modal-dialog{
+          max-width: 850px;
+          .modal-content{
+              .modal-header{
+                  border-bottom:none;
+                  #exampleModalLabel{
+                      font-size:24px;
+                      color:@lightBlack;
+                      font-weight:bold;
+                  }
+              }
+              padding:20px;
+              .prev_main_info{
+                  .tab_prev{
+                      float:left;
+                      width:268px;
+                      label{
+                          font-size:14px;
+                          color:@lightGray;
+                      }
+                      span{
+                          font-size:14px;
+                          color:@lightBlack;
+                      }
+                  }
+              }
+              .work_content{
+                  border-top:1px solid @lightWhite;
+                  margin-top:20px;
+                  padding-top:20px;
+                  div{
+                      label{
+                          float:left;
+                          width:76px;
+                          height:14px;
+                          font-size:14px;
+                          color:@lightGray;
+                      }
+                      p{
+                          float:left;
+                          width:690px;
+                          font-size:14px;
+                          color:@lightBlack;
+                      }
+                  }
+              }
+              .modal-footer{
+                  border-top:none;
+                  .btn-primary{
+                      margin:0 auto;
+                      width:128px;
+                      height:32px;
+                      line-height:16px;
+                  }
+              }
+          }
+      }
+  }
+
+  .table .thead-blue th {
+      color: @white;
+      background-color: @tabHeader;
+      border-color: @tabHeader;
+      font-size:14px;
+  }
+  #table-edit,#table-del,#table-start,#table-see{
+      font-size:14px;
+      color:@tabHeader;
+      margin:0 10px;
+  }
+
+  .aActive{
+      color:@delButton !important;
+  }
+}

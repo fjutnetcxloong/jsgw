@@ -1,0 +1,165 @@
+<div class="side-bar-cont">
+    <div class="sider-top">
+        <img src="../../assets/img/logo.png" alt="">
+    </div>
+    <div class="accordion sider-bottom text-center" id="accordionExample">
+        <div class="card">
+            <div class="card-header" id="headingOne">
+                <h2 class="mb-0">
+                    <img src="../../assets/img/sider-logo1.png" alt="">
+                    <button class="btn btn-link text-white" type="button" data-toggle="collapse"
+                        data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                        首页管理
+                    </button>
+                </h2>
+            </div>
+            <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#headingOne">
+                <div>
+                    <div class="list-group" id="list-tab" role="tablist">
+                        <a class="list-group-item list-group-item-action" id="list-home-list" data-toggle="list"
+                            href="" role="tab" aria-controls="home" onclick="routeTo(1)">首页展示</a>
+                        <a class="list-group-item list-group-item-action" id="list-profile-list" data-toggle="list"
+                            href="" role="tab" aria-controls="profile" onclick="routeTo(2)">轮播管理</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-header" id="headingTwo">
+                <h2 class="mb-0">
+                    <img src="../../assets/img/sider-logo2.png" alt="">
+                    <button class="btn btn-link text-white" type="button" data-toggle="collapse"
+                        data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                        关于我们
+                    </button>
+                </h2>
+            </div>
+            <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#headingTwo">
+                <div>
+                    <div class="list-group" id="list-tab" role="tablist">
+                        <a class="list-group-item list-group-item-action" id="list-home-list" data-toggle="list"
+                            href="#list-home" role="tab" aria-controls="home" onclick="routeTo(3)">公司简介</a>
+                        <a class="list-group-item list-group-item-action" id="list-profile-list" data-toggle="list"
+                            href="#list-profile" role="tab" aria-controls="profile" onclick="routeTo(4)">企业文化</a>
+                        <a class="list-group-item list-group-item-action" id="list-messages-list" data-toggle="list" href="#list-messages" role="tab" aria-controls="messages" onclick="routeTo(5)">底部栏</a>
+                        <a class="list-group-item list-group-item-action" id="list-settings-list" data-toggle="list" href="#list-settings" role="tab" aria-controls="settings" onclick="routeTo(6)">大事记</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-header" id="headingThree">
+                <h2 class="mb-0">
+                    <img src="../../assets/img/sider-logo3.png" alt="">
+                    <button class="btn btn-link text-white" type="button" data-toggle="collapse"
+                        data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                        产品咨询
+                    </button>
+                </h2>
+            </div>
+            <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#headingThree">
+                <div>
+                    <div class="list-group" id="list-tab" role="tablist">
+                        <a class="list-group-item list-group-item-action" id="list-home-list" data-toggle="list"
+                            href="#list-home" role="tab" aria-controls="home" onclick="routeTo(7)">资讯中心</a>
+                        <a class="list-group-item list-group-item-action" id="list-profile-list" data-toggle="list"
+                            href="#list-profile" role="tab" aria-controls="profile" onclick="routeTo(8)">产品中心</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-header" id="headingFour">
+                <h2 class="mb-0">
+                    <img src="../../assets/img/sider-logo4.png" alt="">
+                    <button class="btn btn-link text-white" type="button" data-toggle="collapse"
+                        data-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
+                        公司交流
+                    </button>
+                </h2>
+            </div>
+            <div id="collapseFour" class="collapse" aria-labelledby="headingFour" data-parent="#headingFour">
+                <div>
+                    <div class="list-group" id="list-tab" role="tablist">
+                        <a class="list-group-item list-group-item-action" id="list-home-list" data-toggle="list"
+                            href="#list-home" role="tab" aria-controls="home" onclick="routeTo(9)">公告管理</a>
+                        {{!-- <a class="list-group-item list-group-item-action" id="list-profile-list" data-toggle="list"
+                            href="#list-profile" role="tab" aria-controls="profile" onclick="routeTo(10)">部门交流</a> --}}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-header" id="headingFive">
+                <h2 class="mb-0">
+                    <img src="../../assets/img/sider-logo5.png" alt="">
+                    <button class="btn btn-link text-white" type="button" data-toggle="collapse"
+                        data-target="#collapseFive" aria-expanded="false" aria-controls="collapseFive">
+                        加入我们
+                    </button>
+                </h2>
+            </div>
+            <div id="collapseFive" class="collapse" aria-labelledby="headingFive" data-parent="#headingFive">
+                <div>
+                    <div class="list-group" id="list-tab" role="tablist">
+                        <a class="list-group-item list-group-item-action" id="list-home-list" data-toggle="list"
+                            href="#list-home" role="tab" aria-controls="home" onclick="routeTo(10)">招聘信息管理</a>
+                        <a class="list-group-item list-group-item-action" id="list-home-list" data-toggle="list"
+                            href="#list-home" role="tab" aria-controls="home" onclick="routeTo(11)">招聘地区管理</a>
+                        <a class="list-group-item list-group-item-action" id="list-home-list" data-toggle="list"
+                            href="#list-home" role="tab" aria-controls="home" onclick="routeTo(12)">招聘职位管理</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-header" id="headingSix">
+                <h2 class="mb-0">
+                    <img src="../../assets/img/sider-logo6.png" alt="">
+                    <button class="btn btn-link text-white" type="button" data-toggle="collapse"
+                        data-target="#collapseSix" aria-expanded="false" aria-controls="collapseSix">
+                        员工管理
+                    </button>
+                </h2>
+            </div>
+            <div id="collapseSix" class="collapse" aria-labelledby="headingSix" data-parent="#accordionExample">
+                <div>
+                    <div class="list-group" id="list-tab" role="tablist">
+                        <a class="list-group-item list-group-item-action" id="list-home-list" data-toggle="list"
+                            href="#list-home" role="tab" aria-controls="home" onclick="routeTo(13)">员工管理</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    const mapRoute = new Map([
+            [1, '/delivery/home'],//首页管理
+            [2, '/delivery/carousel'],//轮播管理
+            [3, '/delivery/intro'],//公司简介
+            [4, '/delivery/culture'],//企业文化
+            [5, '/delivery/helpContent'],//底部栏
+            [6, '/delivery/events'],//大事记
+            [7, '/delivery/consult'],//资讯中心
+            [8, '/delivery/products'],//产品中心
+            [9, '/delivery/notice'],//公告管理
+            [10, '/delivery/invite'],//招聘信息管理
+            [11, '/delivery/job'],//招聘地区管理
+            [12, '/delivery/postClassify'],//招聘职位管理
+            [13, '/delivery/department-structur'],//员工管理
+        ])
+    function routeTo(num) {
+        window.location.href = mapRoute.get(num)
+        //$(`.list-group-item:eq(${num-1})`).addClass('active').siblings().removeClass('active')
+    }
+    for (let item of mapRoute.entries()) { 
+        if(window.location.href.includes(item[1])){
+            $(`.list-group-item:eq(${item[0]-1})`).addClass('active')
+            .parents('.collapse').addClass('show')
+            .siblings().removeClass('show')
+            .siblings().removeClass('active')
+        }
+    }
+</script>

@@ -1,0 +1,126 @@
+@import './style/index.less';
+//公司交流
+.company-talk-container{
+  .mainModal{
+      .bootstrap-table .fixed-table-toolbar .bs-bars{
+          float: unset !important;
+          
+      }
+      .job-class-top{
+          border-bottom: 1px solid #EEE;
+          margin-left: 12px;
+          margin-right: 12px;
+          padding-left: 12px;
+          padding-right: 12px;
+          padding-bottom: 24px;
+      }
+  }
+  .table-container{
+      // float: right;
+      margin-top: 10px;
+      
+      .float-left{
+          float: unset !important;
+      }
+  }
+  .row-searchWork{
+      // width: 600px;
+      .screeningClear,#filterByComm{
+          background-color: @white;
+          width: 64px;
+          height: 32px;
+          font-size: 14px;
+          color: @tabHeader;
+          border: 1px solid @tabHeader;
+          border-radius: 4px !important;
+      }
+      .searchWork{
+          height: 32px;
+          border: none;
+          outline: none;
+          background-color: #F3F6FA;
+          color: #A0AAB6;
+          font-size: 12px;
+          text-align: center;
+          width: 50%;
+      }
+      input::placeholder{
+          color: #A0AAB6;
+      }
+      .btn-group{
+        .screeningClear{
+          margin-right: 15px;
+        }
+      }
+  }
+  .main-searchWork{
+      border:1px solid #ced4da;
+      border-radius: 0.25rem;
+      height: 32px;
+      border: none;
+      outline: none;
+      background-color: #F3F6FA;
+      color: #A0AAB6;
+      font-size: 12px;
+      width: 50%;
+      .form-control{
+          font-size: 12px;
+          color: #A0AAB6;
+          // .time_close{
+          //     background: url('../../img/timer.png') no-repeat;
+          //     background-size: 100%;
+          //     width: 14px;
+          //     height: 14px;
+          // }
+      }
+  }
+  .btn-primary{
+      color:@white;
+      border:1px solid #007bff;
+      background:#007bff;
+      font-size: 14px;
+      width: 128px;
+      height: 32px;
+      border-radius: 4px;
+      margin-top: 6px;
+  }
+  .table-searchWork{
+      width: 100%;
+      // padding:0 24px;
+      box-sizing: border-box;
+  }
+  .table-see-searchWork{
+      margin:0 6px;
+      color: @tabHeader;
+      font-size: 14px;
+  }
+  .table-del-searchWork{
+      color: @delButton;
+  }
+  .modal-footer{
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      .btn-secondary{
+          width: 80px;
+          height: 35px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+      }
+      .btn-primary{
+          width: 80px;
+          height: 35px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          margin-top: 0;
+      }
+  }
+  .editor-content{
+      width: 100%;
+      padding: 10px;
+      box-sizing: border-box;
+  }
+}

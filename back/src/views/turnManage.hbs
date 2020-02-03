@@ -1,0 +1,121 @@
+{{#>default}}
+<div class="turn-manage-container">
+  <div class="turn-manage-top">
+    轮播管理
+  </div>
+  <Form>
+    <div class="turn-manage-body">
+      <div class="turn-spec">
+        <div>循环间隔<input type="text" style="background:rgba(243,246,250,1);" class="carousel-timer" />秒</div>
+        <button class="btn">预览</button>
+      </div>
+      <div class="container turn-pic">
+        <div class="row">
+          {{#if carouselList.length}}
+            {{#each carouselList}}
+              <div keyId={{this.id}} class="turn-item col-4 turned">
+                <div class="turn-item-pic">
+                  <img src={{this.pic_address}} onclick="" alt="">
+                  <input type="file" class="turn-item-input">
+                </div>
+                <div class="close_" keyId={{this.id}}>
+                  <img src="../assets/img/close.png" alt="">
+                </div>
+                <div class="turn-link">
+                  <input type="text" class="link-address" placeholder="请输入跳转地址" value={{this.link}}>
+                </div>
+              </div>
+            {{/each}}
+          {{/if}}
+          <div class="col-4 turn-item click-to-upload-container">
+            <div class="click-to-upload">
+              <p>点击上传</p>
+              <input type="file" class="click-to-upload-input">
+            </div>
+          </div>
+        </div>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
+<script src="../utils/utils.js"></script>
+<script>
+  $(function(){
+    //设置图片高度
+    if($('.turn-item-pic img')[0]){
+      let picWidth = $('.turn-item-pic img')[0].offsetWidth
+      if(picWidth < 100) {picWidth = 400}
+      $('.turn-item-pic img').css('height', picWidth + 'px')
+      let uploadHeight = $('.turned')[0].offsetHeight
+      if(uploadHeight < 100) {uploadHeight = 400}
+      $('.click-to-upload').css('height', uploadHeight - 60 + 'px')
+    } else {
+      $('.click-to-upload').css('height', '300px')
+    }
+
+    //设置跳转路径和轮播图
+    $('.turned').on('change', function(){
+      let formData = new FormData();
+      const pic_address = $(`.turn-item-input:eq(${$(this).index()})`)[0].files
+      const link = $(`.link-address:eq(${$(this).index()})`).val()
+      const id = $(this).attr('keyId')
+      if(pic_address.length > 0){formData.append('pic_address', pic_address[0], pic_address[0].name)}
+      formData.append('link', link)
+      formData.append('id', id)
+      $.ajax({
+        url: url.setCarouselLink,
+        type: "POST",
+        data: formData,
+        async: false,
+        cache: false,
+        contentType: false,
+        processData: false,
+        success: function (res) {
+          toast(res.message, 1)
+        }
+      });
+    })
+    //新增轮播图
+    $('.click-to-upload-input').on('change', function(){
+      const pic_address = $(this)[0].files[0]
+      let formData = new FormData();
+      formData.append('pic_address', pic_address, pic_address.name)
+      $.ajax({
+        url: url.newCarousel,
+        type: "POST",
+        data: formData,
+        async: false,
+        cache: false,
+        contentType: false,
+        processData: false,
+        success: function (res) {
+          toast(res.message, 1)
+        }
+      });
+    })
+    //删除轮播图
+    $('.close_').on('click', function(){
+      console.log($(this))
+      $.post(url.delCarousel, {id: $(this).attr('keyId')}, function(res){
+        if(res && res.status === 0){
+          location.reload()
+        }
+      })
+    })
+    //设置轮播时间
+    $('.carousel-timer').on('blur', function(){
+      let str = /^[0-9]{1,}$/
+      if(str.test($(this).val())){
+        $.post(url.setCarouselTimer, {carouselTimer: $(this).val()}, function(res){
+          if(res && res.status === 0){
+            toast(res.message, 0)
+          }
+        })
+      } else {
+        toast('请输入数字', 0)
+      }
+    })
+  })
+</script>
+{{/default}}

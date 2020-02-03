@@ -1,0 +1,95 @@
+@import "./style/index.less";
+.login {
+    padding: 0 !important;
+    input:active, input:focus{
+        border:1px solid rgba(10,175,222,1);
+        border-radius:2px;
+        background-color: #fff !important;
+    }
+    .form-control::placeholder {
+        color: @lightGray !important;
+        font-size: 12px !important;
+    }
+
+    .login-header {
+        height: 80px;
+
+        .login-logo {
+            width: 146px;
+            height: 40px;
+            margin: 20px;
+        }
+    }
+
+    .content {
+        background: #F2F2F2;
+        padding: 60px 0 42px 0;
+        box-sizing: border-box;
+
+        .content-inner {
+            height: 664px;
+            margin: 0 auto;
+
+            .inner-left {
+                padding: 86px 0 96px 80px;
+
+                .left-img {
+                    padding: 19px 6px 39px 24px;
+
+                    img {
+                        width: 522px;
+                        height: 424px;
+                    }
+                }
+            }
+
+            .inner-right {
+                border: none;
+                padding: 39px 43px 0 0;
+                width: 350px;
+
+                .title {
+                    margin-bottom: 48px;
+                }
+
+                .get-code {
+                    background: #DFE2E6;
+                    font-size: 14px;
+                }
+
+                .btn-login {
+                    background: @tabHeader !important;
+                    margin-top: 80px !important;
+                    margin-bottom: 16px !important;
+                }
+
+                .remmber {
+                    color: #666;
+                    font-size: 14px;
+                }
+
+                .form-check-input {
+                    width: 16px;
+                    height: 16px;
+                    background: @white;
+                    border: 1px solid #d9d9d9;
+                    border-radius: 4px;
+                }
+            }
+        }
+
+        .login-footer {
+            min-width: 1200px;
+            margin-top: 100px;
+            font-size: 14px;
+            letter-spacing: 4px;
+        }
+    }
+    .container {
+        min-width: 1200px;
+    }
+    
+    .help-block {
+        color: red;
+    }
+}

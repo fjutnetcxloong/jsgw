@@ -1,0 +1,216 @@
+.join {
+    min-width: 1200px;
+    //banner图
+    .banner {
+        //width: 100%;
+        //height: 400px;
+        background: url("/banner1.png") no-repeat;
+        background-size: 100%;
+        height: 350px;
+        color: #25608D;
+        padding-top: 30px;
+        .join-one {
+            font-size: 40px;
+            padding-left: 230px;
+        }
+        .join {
+            font-size: 32px;
+            margin: 0 0 27px;
+            padding-left: 230px;
+        }
+
+    }
+    //表单搜索栏
+    .sizer {
+        margin-bottom: 40px;
+        .screen {
+            display: flex;
+            margin-bottom: 24px;
+            .fill {
+                flex: 1;
+                background-color: #F3F6FA;
+                font-size: 12px;
+                margin-right: 40px;
+                border: none;
+            }
+            .ant-select-enabled {
+                width: 180px;
+                font-size: 12px;
+                margin-right: 40px;
+                .ant-select-selection {
+                    background: #F3F6FA;
+                    border: none;
+                }
+            }
+            .ant-calendar-picker {
+                //width: 280px;
+                .ant-calendar-picker-input {
+                    border: none;
+                    background: #F3F6FA;
+                    font-size: 12px;
+                }
+            }
+            .focus {
+                background: #fff;
+            }
+        }
+        .search {
+            text-align: right;
+            display: flex;
+            justify-content: flex-end;
+            .empty {
+                font-size: 14px;
+                color: #999;
+                margin-right: 24px;
+                line-height: 32px;
+                font-family:Source Han Sans CN;
+                cursor:pointer;
+            }
+            .search-button {
+                width: 80px;
+                line-height: 30px;
+                color: #4FCAFF;
+                border: 1px solid #4FCAFF;
+                text-align: center;
+                border-radius: 4px;
+                cursor:pointer;
+            }
+            .ant-btn-primary {
+                background: #4FCAFF;
+                border-color: #4FCAFF;
+            }
+        }
+    }
+    //每条数据
+    .each {
+        display: flex;
+        justify-content: space-between;
+        align-content: center;
+        padding: 14px 270px;
+        margin-bottom: 40px;
+        .datum {
+            .position {
+                display: flex;
+                font-size: 16px;
+                font-family:Source Han Sans CN;
+                div:nth-child(1) {
+                    color: #25608D;
+                    margin-right: 24px;
+                }
+                div:nth-child(2) {
+                    color: #F4B43C;
+                }
+            }
+            .specification {
+                font-size: 14px;
+                color: #999;
+                margin: 14px 0;
+                display: flex;
+                font-family:Source Han Sans CN;
+                div {
+                    padding: 0 10px;
+                    border-right: 1px solid #999;
+                }
+                div:nth-child(1) {
+                    padding-left: 0;
+                }
+                div:last-child {
+                    border-right: none;
+                }
+            }
+            .time {
+                display: flex;
+                font-size: 12px;
+                color: #999;
+                font-family:Source Han Sans CN;
+                div {
+                    margin-right: 15px;
+                }
+            }
+        }
+        .details {
+            line-height: 90px;
+            font-size: 14px;
+            color: #4FCAFF;
+            cursor: pointer;
+            img {
+                margin: -4px 0 0 13px;
+            }
+        }
+    }
+
+}
+
+.detail-main{
+    width:848px !important;
+    .ant-modal-header{
+        border:none;
+        padding: 40px 24px 16px;
+        .ant-modal-title{
+            font-size:24px;
+            color:#25608D;
+            font-family:Source Han Sans CN;
+        }
+    }
+    .detail-top{
+        .detail{
+            display: flex;
+            // justify-content:center;
+            div{
+                width:600px;
+                margin:10px;
+                font-size:14px;
+                label{
+                    color:#999999;
+                }
+                span{
+                    color:#333333
+                }
+            }
+        }
+        .money{
+            color:#F4B43C !important;
+        }
+    }
+    .detail-bottom{
+        div{
+            display: flex;
+            //margin:10px;
+            padding: 24px 0;
+            label{
+                min-width:72px;
+                color:#999999;
+            }
+            p{
+                color:#333333
+            }
+        }
+        padding-top:10px;
+    }
+    .detail-bottom div:nth-child(1){
+        border-bottom:1px solid #EEEEEE;
+        border-top:1px solid #EEEEEE;
+        //padding:20px 0;
+    }
+    .ant-modal-footer{
+        border:none;
+        padding: 40px 16px;
+        div{
+            text-align: center;
+            .ant-btn-primary {
+                margin: 0;
+                width: 128px;
+                border-radius: 4px;
+            }
+        }
+    }
+    .ant-modal-body {
+        padding-bottom: 0;
+    }
+    p {
+        margin-bottom: 0;
+    }
+    .ant-modal-footer div button:nth-child(1){
+        display: none;
+    }
+}

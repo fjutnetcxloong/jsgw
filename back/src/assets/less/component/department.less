@@ -1,0 +1,166 @@
+@import "./style/index.less";
+
+ //部门结构样式
+ .department-structur-container {
+  padding-right: 24px;
+  display: flex;
+  justify-content: space-between;
+
+  .pagination-detail {
+      display: none !important;
+  }
+
+  .svg-img {
+      img {
+          width: 15px;
+          height: 15px;
+          opacity: 0;
+          transition: all 1s linear;
+      }
+  }
+
+  .item:hover img {
+      opacity: 1;
+  }
+
+  .job-modal-footer {
+      margin-bottom: 64px;
+
+      .btn {
+          width: 128px;
+          height: 32px;
+          font-size: 14px;
+          line-height: 20px;
+      }
+
+      .btn-left {
+          border: 1px solid @tabHeader;
+          background: @white;
+          color: @tabHeader;
+          margin-right: 20px;
+      }
+
+      .btn-right {
+          background: @tabHeader;
+          color: @white;
+      }
+  }
+
+  .job-form {
+      margin: 0 auto !important;
+      // height: 343px;
+      padding: 40px 40px 0 40px;
+      box-sizing: border-box;
+
+      .job-form-label {
+          color: @lightGray;
+          font-size: 14px;
+      }
+
+      .job-form-input {
+          height: 32px;
+          background: @radioWhite !important;
+          border: none !important;
+      }
+
+      input::-webkit-input-placeholder {
+          /* 修改字体颜色 */
+          color: @radioFontWhite;
+          /* 修改字号，默认继承input */
+          font-size: 12px;
+      }
+  }
+
+  input::-webkit-input-placeholder {
+      /* 修改字体颜色 */
+      color: @radioFontWhite;
+      /* 修改字号，默认继承input */
+      font-size: 12px;
+      //    border: none !important;
+  }
+
+  .form-control {
+      border: none !important;
+      background: @radioWhite;
+  }
+
+  .col-form-label {
+      color: @radioFontWhite;
+      font-size: 14px;
+  }
+
+  .dep-footer {
+      .btn {
+          width: 128px;
+          height: 32px;
+          line-height: 20px;
+      }
+
+      .btn-left {
+          border: 1px solid @tabHeader;
+          font-size: 14px;
+          color: @tabHeader;
+      }
+
+      .btn-right {
+          background: @tabHeader;
+          font-size: 14px;
+          color: @white;
+      }
+  }
+
+  .department-structur-left {
+      color: @lightBlack;
+      width: 230px;
+      border-right: 1px solid @lightWhite;
+
+      .left-title {
+          font-size: 16px;
+          font-weight: bold;
+          padding-left: 24px;
+          height: 60px;
+          line-height: 60px;
+      }
+
+      .left-content {
+          .item {
+              font-size: 14px;
+              height: 40px;
+              line-height: 40px;
+              padding-left: 24px;
+              font-weight: 500;
+
+              span {
+                  margin-right: 40px;
+                  width: 35px;
+              }
+          }
+
+          .item:nth-child(1) {
+              background-color: #D5F5FF;
+              color: @tabHeader;
+          }
+
+          .item:not(:nth-child(1)):hover {
+              background: rgba(120, 225, 255, .1);
+          }
+      }
+
+      .left-footer {
+          padding-left: 24px;
+          font-size: 14px;
+          color: @tabHeader;
+          margin-top: 30px;
+          cursor: pointer;
+
+          img {
+              width: 14px;
+              margin-right: 10px;
+          }
+      }
+  }
+
+  .department-structur-right {
+      flex: 1;
+  }
+}

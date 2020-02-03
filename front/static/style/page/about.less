@@ -1,0 +1,170 @@
+.about {
+    min-width: 1200px;
+    .banner {
+        background: url("/introduce.png") no-repeat;
+        background-size: 100% 100%;
+        height: 320px;
+        color: #25608D;
+        padding-top: 60px;
+        margin-bottom: 57px;
+        .join-one {
+            font-size: 50px;
+            font-family:Source Han Sans CN;
+            padding-left: 230px;
+        }
+        .join {
+            font-size: 32px;
+            margin: 0 0 27px;
+            font-family:DIN;
+            font-weight:bold;
+            padding-left: 230px;
+        }
+    }
+    .synopsis {
+        display: flex;
+        position: relative;
+        .synopsis-left {
+            float: left;
+            min-width: 500px;
+            .synopsis-img {
+                width: 541px;
+                height: 330px;
+                border-radius: 10px;
+            }
+        }
+        .synopsis-right {
+            padding: 40px;
+            box-shadow:0 3px 6px rgba(230,230,230,0.8);
+            min-width: 500px;
+            min-height: 308px;
+            float: right;
+            margin: 100px 0 0 -83px;
+            background: #fff;
+            border-radius: 10px;
+
+            .synopsis-name {
+                font-size: 24px;
+                color: #333;
+                margin-bottom: 32px;
+                font-weight: 600;
+            }
+            .synopsis-content {
+                font-size: 14px;
+                color: #666;
+            }
+        }
+    }
+    .deed {
+        text-align: center;
+        margin: 120px 0;
+        .deed-name {
+            font-size: 24px;
+            color: #333;
+            font-weight: 600;
+        }
+        .deed-each-box {
+            .deed-each {
+                padding: 0 160px;
+                .time {
+                    font-size: 24px;
+                    color: #333;
+                    font-weight: 600;
+                    display: flex;
+                    align-items: center;
+                    .dot {
+                        width: 12px;
+                        height: 12px;
+                        border-radius: 50%;
+                        background: #25608D;
+                        //margin-right: 24px;
+                    }
+                    .short {
+                        margin-left: 24px;
+                    }
+                    .circle {
+                        padding: 6px;
+                    }
+                    .cycle {
+                        padding: 5px;
+                        border: 1px solid #25608D;
+                        border-radius: 50%;
+                    }
+                }
+                .each-content {
+                    margin-left: 11px;
+                    text-align: left;
+                    padding: 8px 36px 59px;
+                    border-left: 2px solid #25608D;
+                }
+            }
+            .deed-each:last-child {
+                .each-content {
+                    border-left: none;
+                    padding-bottom: 0;
+                }
+            }
+        }
+    }
+
+    .culture {
+        text-align: center;
+        .culture-name {
+            font-size: 24px;
+            color: #333;
+            font-weight: 600;
+            margin-bottom: 40px;
+        }
+        .across {
+            margin: 0 auto;
+        }
+        .culture-content {
+            font-size: 14px;
+            color: #666;
+            padding: 0 230px;
+            line-height: 32px;
+            margin: 32px 0 40px 0;
+            text-align: left;
+            p {
+                margin-bottom: 0;
+            }
+        }
+        .culture-img {
+            width: 100%;
+            height: 358px;
+            border-radius: 10px;
+            margin-bottom: 80px;
+        }
+    }
+
+    .anchor {
+        margin-left: 59px;
+        .visible {
+            width: 0;
+            height: 0;
+            border: none;
+        }
+        .ant-anchor-ink::before {
+            width: 0;
+        }
+        .ant-anchor-link{
+            text-align: right;
+            .ant-anchor-link-title {
+                color: #4FCAFF;
+                font-size: 14px;
+            }
+            .ant-anchor-link-title-active {
+                color: #F4B43C;
+            }
+        }
+    }
+
+
+    //公用
+    .across {
+        height: 5px;
+        width: 40px;
+        background: #25608D;
+        border-radius: 100px;
+        margin-bottom: 32px;
+    }
+}

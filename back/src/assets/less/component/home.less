@@ -1,0 +1,314 @@
+@import "./style/index.less";
+body{
+    background-color: #eee;
+}
+.modal-header{
+    border-bottom: 0;
+}
+input:active, input:focus, select:active, select:focus{
+    border:1px solid rgba(10,175,222,1);
+    border-radius:2px;
+    background-color: #fff !important;
+    &::-webkit-input-placeholder {
+        background-color: #fff !important;
+    }
+}
+* {
+    text-decoration: none !important;
+    padding: 0;
+    margin: 0;
+}
+.toast {
+    width: 200px !important;
+    background: rgba(0, 0, 0, 0.5);
+    border: none !important;
+    color: @white;
+    text-align: center;
+    left: 50%;
+    top: 50%;
+    z-index: 100000;
+    transform: translateX(-50%);
+    // opacity: 1;
+}
+.home-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding: 0 !important;
+    min-width: 1200px;
+
+    .body-content {
+        flex: 1;
+        background-color: @lightWhite;
+        .header-container {
+            height: 80px;
+            line-height: 80px;
+            background-color: @white;
+            position: fixed;
+            // margin-top: 0;
+            // flex: 1;
+            width: 100%;
+            z-index: 5;
+            padding-left: 30px;
+            padding-right: 30px;
+            .header-info{
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                .logout{
+
+                }
+            }
+        }
+
+        .mid-content {
+            margin-left: 24px;
+            margin-top: 24px;
+            margin-right: 24px;
+            margin-bottom: 24px;
+            background-color: @white;
+            // background: @tabHeader;
+            margin-top: 104px;
+
+            //分页左侧提示文字隐藏
+            .pagination-detail {
+                display: none;
+            }
+
+            //筛选模块样式
+            #select {
+                width: 100px;
+                display: inline-block;
+            }
+
+            //表格公共样式
+            .table-container {
+                padding-left: 24px;
+                padding-right: 24px;
+                //.row-container{
+                //    padding-left:20px;
+                //}
+                // thead> tr{
+                //     height: 56px;
+                //     line-height: 56px;
+                // }
+                .opt {
+                    font-size: 14px;
+                    color: @tabHeader;
+                    margin: 20px;
+                }
+
+                .opt.remove {
+                    color: @delButton;
+                }
+
+                //行样式
+                #table {
+                    border: 0;
+                    border-radius: 4px 4px 0 0;
+                }
+
+                tbody tr {
+                    height: 81px;
+                    font-size: 14px;
+                    // td.last-column {}
+                }
+
+                //表头样式
+                thead {
+                    
+                    tr {
+                        background-color: @tabHeader;
+                        color: @white;
+                        font-weight: normal !important;
+                        font-size: 14px;
+                    }
+                }
+                .table-striped tbody tr:nth-of-type(odd) {
+                    background-color: #F7FDFF;
+                }
+
+                .fixed-table-pagination {
+                    height: 140px;
+                    line-height: 140px;
+
+                    .float-right {
+                        margin-top: 50px;
+                        .pagination{
+                            .page-item{
+                                margin: 0 8px;
+                                a{
+                                    width: 24px;
+                                    height: 24px;
+                                    padding: 0 !important;
+                                    line-height: 20px;
+                                    text-align: center;
+                                    font-size: 12px;
+                                    border-radius: 4px;
+                                    color: #666;
+                                    border-color: #d9d9d9;
+                                }
+                            }
+                            .page-item.active{
+                                a{
+                                    color: @tabHeader !important;
+                                    background-color: @white;
+                                    border-color: @tabHeader;
+                                }
+                            }
+                            .page-item.page-pre,.page-item.page-next{
+                                a{
+                                    width: 72px;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            //首页管理样式
+            .index-manage-container{
+                .table-container{
+                    .module_number{
+                        width: 40px;
+                        background:rgba(243,246,250,1);
+                        color: @lightBlack;
+                        border-radius: 4px;
+                        height: 32px;
+                        outline: 0;
+                        border: 0;
+                        text-align: center;
+                    }
+                }
+            }
+
+            //招聘信息样式
+            .store-delivery-container {
+                .card {
+                    border: 0;
+                    border-bottom: 1px solid @lightWhite;
+                    width: 100%;
+
+                    .card-body {
+                        display: flex;
+                        justify-content: space-between;
+                        padding: 28px 24px;
+                        align-items: center;
+                        .card-body-title {
+                            font-size: 24px;
+                            font-weight: 600;
+                            letter-spacing: 3px;
+                        }
+
+                        .card-body-btn {
+                            .btn {
+                                width: 128px;
+                                height: 32px;
+                                font-size: 14px;
+                            }
+
+                            .btn:nth-child(1) {
+                                color: @tabHeader;
+                            }
+
+                            .btn:nth-child(2) {
+                                background-color: @tabHeader;
+                                color: @white;
+                            }
+                        }
+                    }
+                }
+            }
+
+            //弹窗样式
+            .modal-form {
+                .modal-dialog {
+                    width: 940px;
+                    max-width: unset;
+                }
+
+                .form-input-item {
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                    font-size: 14px;
+                }
+            }
+        }
+    }
+
+    //侧边栏样式
+    .sider-bar {
+        width: 200px;
+        height: fit-content;
+
+        .side-bar-cont {
+            overflow: auto;
+            position: fixed;
+            margin-left: 0;
+            width: 200px;
+            z-index: 10;
+            background-color: #12181A;
+            height: 100vh;
+
+            .sider-top {
+                background-color: #12181A;
+                height: 80px;
+                line-height: 80px;
+                text-align: center;
+
+                img {
+                    width: 60%;
+                    margin: auto;
+                    // position: relative;
+                    // top: 50%;
+                    // transform: translateY(-50%);
+                }
+            }
+
+            .sider-bottom {
+                .card {
+                    border: 0;
+                    border-radius: 0 !important;
+                    .card-header {
+                        background-color: #12181A;
+                        border-radius: 0;
+                        .btn-link.focus,
+                        .btn-link:focus {
+                            text-decoration: none;
+                        }
+                        .mb-0{
+                            img{
+                                width: 16px;
+                            }
+                        }
+                    }
+
+                    .collapse,
+                    .collapsing {
+                        background-color: #EAEDF1;
+
+                        .list-group-item {
+                            border: 0;
+                            background-color: #3B4458;
+                            color: #8F9EB2;
+                            font-size: 14px;
+                            border-radius: 0;
+                        }
+
+                        .list-group-item:hover {
+                            background-color: #EAEDF1;
+                            color: @tabHeader !important;
+                        }
+
+                        .list-group-item.active {
+                            background-color: #EAEDF1;
+                            color: @tabHeader !important;
+                            border-left: 4px solid @tabHeader;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
