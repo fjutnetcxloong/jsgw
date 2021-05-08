@@ -11,7 +11,7 @@
   "dependencies": {
     "@chuchur/koa-minify": "^1.0.2",
     "crypto": "^1.0.1",
-    "handlebars": "^4.5.3",
+    "handlebars": "^4.7.7",
     "jsonwebtoken": "^8.5.1",
     "koa": "^2.7.0",
     "koa-body": "^4.1.1",
